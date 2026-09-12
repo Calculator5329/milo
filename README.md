@@ -1,7 +1,7 @@
 # Milo
 
 A local voice companion that runs entirely on your computer. You talk, it talks back, and
-you can cut in while it is speaking. Transcription, the language model, and the voice all
+you can cut in while it is speaking. Transcription, the language model and the voice all
 run on your machine; the internet is used only when you say "look up ..." and then only
 your search query leaves.
 
@@ -33,6 +33,42 @@ targets; other Linux distributions differ only in the package manager commands.
 5. `python milo.py setup-voices`, then `python milo.py doctor` until it prints `READY`.
 6. `python milo.py` and open http://127.0.0.1:8766.
 
+## How a turn works
+
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant S as milo.py server
+    participant W as whisper.cpp
+    participant O as Ollama
+    participant T as Pocket TTS
+
+    B->>S: microphone audio (after ~350 ms of silence)
+    S->>W: transcribe
+    W-->>S: text (~75 ms)
+    S->>O: prompt + conversation
+    O-->>S: tokens stream in (first at ~110 ms)
+    S->>T: first complete sentence
+    T-->>S: PCM chunk (~300 ms after your last word)
+    S-->>B: audio starts playing, mouth animates from real amplitude
+    O-->>S: more tokens
+    S->>T: next sentence
+    T-->>S: next chunk
+    B->>S: you interrupt
+    S-->>B: cancel between chunks; only what you heard is kept
+```
+
+Three things make it feel quick:
+
+- **Sentence streaming.** The reply is split into sentences as tokens arrive, and each
+  sentence goes to the voice while the model is still writing the next one. What you feel is
+  time to the first sentence, not time to the whole answer.
+- **Everything resident.** A model that fits in VRAM beside Whisper answers in about a
+  tenth of a second. The doctor measures your VRAM and picks a tier that fits, because a model
+  spilling a few layers into system RAM takes three to five times longer before the first word.
+- **Voice on the CPU.** Pocket TTS runs on two CPU threads, so the GPU stays free for the
+  language model. That is why the setup installs CPU torch on purpose.
+
 ## What it is
 
 - **Local pipeline.** Browser microphone to a whisper.cpp server, text to Ollama, sentences
@@ -42,15 +78,31 @@ targets; other Linux distributions differ only in the package manager commands.
   audio chunks; only sentences you actually heard stay in the conversation history.
 - **The rig.** An SVG robot with expressions tied to state (idle, listening, thinking,
   speaking) and a mouth driven by real playback amplitude. Two looks, Workshop and Operator,
-  and options for hands and motion, all in Settings. The rig is plain SVG and CSS in
+  with options for hands, expression, and motion. The rig is plain SVG and CSS in
   `web/index.html` and `web/app.js`; restyle it freely.
-- **Voices.** Five Pocket TTS presets you can audition in Settings with identical dialogue.
+- **Voices.** Five Pocket TTS presets you can audition in Settings with identical dialogue,
+  plus a "small speaker" filter that makes any of them sound like it comes from the robot.
 - **Web lookup on request.** "Look up ..." or the Search web button sends the query to
   DuckDuckGo or Brave through `ddgs`, no API key. Milo answers from the snippets, shows the
   sources, and treats the excerpts as untrusted quoted text, never as instructions. Result
   pages are never fetched.
 - **Nothing kept.** No transcripts or audio on disk; the conversation lives in the tab.
   Preferences (voice, model, silence gate) persist in the browser's local storage.
+
+![Settings: voice audition, thinking model, character, expression, hands, background, silence gate and microphone threshold](docs/milo-settings.png)
+
+## Which model
+
+`python milo.py doctor` reads your VRAM and RAM and suggests a tier. The defaults, from a
+bake-off through Milo's own prompt on 2026-09-12 (`docs/models.md` has the full table and
+how it was run):
+
+| Card | Tag | Why |
+|---|---|---|
+| 12 GB and up | `gemma4:12b` | Correct on the constraint prompts with no thinking pass; 118 ms p50 first token on a 16 GB card. |
+| 16 GB, patient | `gpt-oss:20b` | Reasons before answering. Slower first word, best on tricky questions. |
+| 6 to 8 GB | `gemma4:4b` | Fits beside Whisper with room to spare. |
+| CPU only, 16 GB RAM | `gemma4:4b` or `qwen2.5:3b` | Works; expect a few seconds of thinking. |
 
 ## What it is not
 
@@ -81,6 +133,14 @@ scripts/setup_voices.py    caches Pocket TTS and the voice states
 tests/                     unit tests and the latency probe
 docs/                      setup, models, latency, voices, evidence
 ```
+
+## Privacy, stated plainly
+
+- The server listens on 127.0.0.1. Nothing is exposed to the network.
+- Audio goes from your browser to the whisper.cpp server on this machine and nowhere else.
+- No telemetry, no update check, no crash reporting.
+- The only outbound traffic is the one-time voice download from Hugging Face during
+  `setup-voices`, the Ollama model pull, and the search query when you ask for a lookup.
 
 ## License
 
