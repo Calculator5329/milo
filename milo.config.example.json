@@ -1,0 +1,19 @@
+{
+  "user_name": "",
+  "model": "gemma4:12b",
+  "models": {
+    "gemma4:12b": "Quick · Gemma 4 12B",
+    "gpt-oss:20b": "Careful · GPT OSS 20B",
+    "phi4:latest": "Balanced · Phi-4 14B",
+    "gemma4:4b": "Light · Gemma 4 4B",
+    "qwen2.5:3b": "Tiny · Qwen 2.5 3B"
+  },
+  "voice": "marius",
+  "voices": ["marius", "javert", "bill_boerst", "stuart_bell", "alba"],
+  "port": 8766,
+  "ollama_url": "http://127.0.0.1:11434",
+  "whisper_url": "http://127.0.0.1:8178",
+  "models_dir": "models",
+  "silence_ms": 350,
+  "tts_threads": 2
+}

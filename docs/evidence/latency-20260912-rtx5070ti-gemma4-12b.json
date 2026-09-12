@@ -1,0 +1,459 @@
+{
+  "label": "setup",
+  "recorded_at": "2026-09-12T13:51:17-05:00",
+  "url": "http://127.0.0.1:8767",
+  "model": "gemma4:12b",
+  "voice": "marius",
+  "turns_per_kind": 4,
+  "health": {
+    "ready": true,
+    "error": null,
+    "model": "gemma4:12b",
+    "tts": "Pocket TTS (CPU)",
+    "voice": "marius",
+    "models": {
+      "gemma4:12b": "Quick \u00b7 Gemma 4 12B",
+      "gpt-oss:20b": "Careful \u00b7 GPT OSS 20B",
+      "phi4:latest": "Balanced \u00b7 Phi-4 14B",
+      "gemma4:4b": "Light \u00b7 Gemma 4 4B",
+      "qwen2.5:3b": "Tiny \u00b7 Qwen 2.5 3B"
+    },
+    "voices": [
+      "marius",
+      "javert",
+      "bill_boerst",
+      "stuart_bell",
+      "alba"
+    ],
+    "local_speech": true,
+    "web": "Explicit queries only",
+    "library": false,
+    "silence_ms": 350,
+    "user_name": ""
+  },
+  "gpu": {
+    "ollama_ps": {
+      "models": [
+        {
+          "name": "gemma4:12b",
+          "model": "gemma4:12b",
+          "size": 8063046122,
+          "digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "details": {
+            "parent_model": "",
+            "format": "gguf",
+            "family": "gemma4",
+            "families": [
+              "gemma4"
+            ],
+            "parameter_size": "11.9B",
+            "quantization_level": "Q4_K_M"
+          },
+          "expires_at": "2026-09-12T15:51:14.618680138-05:00",
+          "size_vram": 8063046122,
+          "context_length": 4096,
+          "vram_fraction": 1.0
+        },
+        {
+          "name": "qwen2.5:3b",
+          "model": "qwen2.5:3b",
+          "size": 2159374499,
+          "digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+          "details": {
+            "parent_model": "",
+            "format": "gguf",
+            "family": "qwen2",
+            "families": [
+              "qwen2"
+            ],
+            "parameter_size": "3.1B",
+            "quantization_level": "Q4_K_M"
+          },
+          "expires_at": "2026-09-12T15:41:58.387179627-05:00",
+          "size_vram": 2159374499,
+          "context_length": 4096,
+          "vram_fraction": 1.0
+        }
+      ]
+    },
+    "nvidia_smi": "NVIDIA GeForce RTX 5070 Ti, 13995 MiB, 16303 MiB, 1 %"
+  },
+  "units": "milliseconds from server turn start (handler entry); client_* are measured by this probe from request send",
+  "summary": {
+    "text": {
+      "request_received": {
+        "n": 4,
+        "p50": 0,
+        "p95": 2,
+        "min": 0,
+        "max": 2
+      },
+      "generation_started": {
+        "n": 4,
+        "p50": 0,
+        "p95": 3,
+        "min": 0,
+        "max": 4
+      },
+      "first_token_ms": {
+        "n": 4,
+        "p50": 114,
+        "p95": 257,
+        "min": 112,
+        "max": 282
+      },
+      "first_sentence_ready": {
+        "n": 4,
+        "p50": 234,
+        "p95": 364,
+        "min": 205,
+        "max": 383
+      },
+      "first_audio_chunk_sent": {
+        "n": 4,
+        "p50": 303,
+        "p95": 872,
+        "min": 276,
+        "max": 970
+      },
+      "generation_done": {
+        "n": 4,
+        "p50": 474,
+        "p95": 720,
+        "min": 378,
+        "max": 751
+      },
+      "last_audio_sent": {
+        "n": 4,
+        "p50": 2181,
+        "p95": 2865,
+        "min": 1165,
+        "max": 2869
+      },
+      "client_first_audio_ms": {
+        "n": 4,
+        "p50": 304,
+        "p95": 874,
+        "min": 277,
+        "max": 971
+      },
+      "client_done_ms": {
+        "n": 4,
+        "p50": 2192,
+        "p95": 2877,
+        "min": 1175,
+        "max": 2880
+      }
+    },
+    "audio": {
+      "request_received": {
+        "n": 4,
+        "p50": 0,
+        "p95": 1,
+        "min": 0,
+        "max": 1
+      },
+      "transcription_done": {
+        "n": 4,
+        "p50": 75,
+        "p95": 134,
+        "min": 69,
+        "max": 144
+      },
+      "generation_started": {
+        "n": 4,
+        "p50": 76,
+        "p95": 135,
+        "min": 70,
+        "max": 145
+      },
+      "first_token_ms": {
+        "n": 4,
+        "p50": 186,
+        "p95": 245,
+        "min": 182,
+        "max": 255
+      },
+      "first_sentence_ready": {
+        "n": 4,
+        "p50": 336,
+        "p95": 362,
+        "min": 306,
+        "max": 363
+      },
+      "first_audio_chunk_sent": {
+        "n": 4,
+        "p50": 404,
+        "p95": 470,
+        "min": 376,
+        "max": 478
+      },
+      "generation_done": {
+        "n": 4,
+        "p50": 894,
+        "p95": 995,
+        "min": 747,
+        "max": 1001
+      },
+      "last_audio_sent": {
+        "n": 4,
+        "p50": 3230,
+        "p95": 3780,
+        "min": 2990,
+        "max": 3840
+      },
+      "client_first_audio_ms": {
+        "n": 4,
+        "p50": 404,
+        "p95": 472,
+        "min": 377,
+        "max": 479
+      },
+      "client_done_ms": {
+        "n": 4,
+        "p50": 3238,
+        "p95": 3788,
+        "min": 2999,
+        "max": 3848
+      }
+    }
+  },
+  "runs": {
+    "text": [
+      {
+        "events": {
+          "transcript": 1,
+          "sentence": 1,
+          "audio": 18,
+          "sentence_end": 1,
+          "done": 1
+        },
+        "sentences": [
+          "Hello, it is good to meet you."
+        ],
+        "metrics": {
+          "client_first_audio_ms": 971,
+          "request_received": 2,
+          "generation_started": 4,
+          "first_token_ms": 282,
+          "first_sentence_ready": 383,
+          "generation_done": 400,
+          "generation_finish": "stop",
+          "generated_tokens": 10,
+          "first_audio_chunk_sent": 970,
+          "first_audio_ms": 970,
+          "last_audio_sent": 1165,
+          "client_done_ms": 1175
+        }
+      },
+      {
+        "events": {
+          "transcript": 1,
+          "sentence": 2,
+          "audio": 68,
+          "sentence_end": 2,
+          "done": 1
+        },
+        "sentences": [
+          "No, you cannot finish the email.",
+          "The booking and the report already take up your full twenty minutes."
+        ],
+        "metrics": {
+          "client_first_audio_ms": 287,
+          "request_received": 0,
+          "generation_started": 0,
+          "first_token_ms": 117,
+          "first_sentence_ready": 205,
+          "first_audio_chunk_sent": 286,
+          "first_audio_ms": 286,
+          "last_audio_sent": 1518,
+          "generation_done": 378,
+          "generation_finish": "stop",
+          "generated_tokens": 22,
+          "client_done_ms": 1526
+        }
+      },
+      {
+        "events": {
+          "transcript": 1,
+          "sentence": 3,
+          "audio": 131,
+          "sentence_end": 3,
+          "done": 1
+        },
+        "sentences": [
+          "A slow start is usually the best way to honor a Saturday.",
+          "Try brewing a fresh pot of coffee and sitting by a window for a few minutes before the day's demands kick in.",
+          "It gives your mind a chance to wake up before your body starts moving."
+        ],
+        "metrics": {
+          "client_first_audio_ms": 322,
+          "request_received": 0,
+          "generation_started": 0,
+          "first_token_ms": 112,
+          "first_sentence_ready": 258,
+          "first_audio_chunk_sent": 320,
+          "first_audio_ms": 320,
+          "last_audio_sent": 2869,
+          "generation_done": 751,
+          "generation_finish": "stop",
+          "generated_tokens": 54,
+          "client_done_ms": 2880
+        }
+      },
+      {
+        "events": {
+          "transcript": 1,
+          "sentence": 3,
+          "audio": 127,
+          "sentence_end": 3,
+          "done": 1
+        },
+        "sentences": [
+          "A notebook forces you to slow down",
+          "and process your thoughts linearly.",
+          "Unlike a digital device, it removes the distractions of notifications and the temptation to multitask, allowing for deeper focus."
+        ],
+        "metrics": {
+          "client_first_audio_ms": 277,
+          "request_received": 0,
+          "generation_started": 0,
+          "first_token_ms": 112,
+          "first_sentence_ready": 211,
+          "first_audio_chunk_sent": 276,
+          "first_audio_ms": 276,
+          "last_audio_sent": 2844,
+          "generation_done": 547,
+          "generation_finish": "stop",
+          "generated_tokens": 36,
+          "client_done_ms": 2859
+        }
+      }
+    ],
+    "audio": [
+      {
+        "events": {
+          "transcript": 1,
+          "sentence": 3,
+          "audio": 142,
+          "sentence_end": 3,
+          "done": 1
+        },
+        "sentences": [
+          "Actually, I am Milo.",
+          "Since we share the same name, perhaps we can start by discussing something practical or a topic you have been pondering lately.",
+          "I am happy to help you think through a problem or just chat about something interesting."
+        ],
+        "metrics": {
+          "client_first_audio_ms": 377,
+          "request_received": 1,
+          "transcribe_ms": 144,
+          "transcription_done": 144,
+          "generation_started": 145,
+          "first_token_ms": 255,
+          "first_sentence_ready": 318,
+          "first_audio_chunk_sent": 376,
+          "first_audio_ms": 376,
+          "last_audio_sent": 2990,
+          "generation_done": 828,
+          "generation_finish": "stop",
+          "generated_tokens": 48,
+          "client_done_ms": 2999
+        }
+      },
+      {
+        "events": {
+          "transcript": 1,
+          "sentence": 4,
+          "audio": 158,
+          "sentence_end": 4,
+          "done": 1
+        },
+        "sentences": [
+          "Well, that's a bit of a coincidence with my name,",
+          "but I'm happy to chat.",
+          "I'm interested in whatever is on your mind, whether it's a practical problem you're solving or just a curious thought you've been chewing on.",
+          "What's occupying your headspace today?"
+        ],
+        "metrics": {
+          "client_first_audio_ms": 429,
+          "request_received": 0,
+          "transcribe_ms": 77,
+          "transcription_done": 78,
+          "generation_started": 78,
+          "first_token_ms": 189,
+          "first_sentence_ready": 355,
+          "first_audio_chunk_sent": 428,
+          "first_audio_ms": 428,
+          "last_audio_sent": 3441,
+          "generation_done": 960,
+          "generation_finish": "stop",
+          "generated_tokens": 65,
+          "client_done_ms": 3449
+        }
+      },
+      {
+        "events": {
+          "transcript": 1,
+          "sentence": 4,
+          "audio": 123,
+          "sentence_end": 4,
+          "done": 1
+        },
+        "sentences": [
+          "Well, since we share a name,",
+          "we can start there.",
+          "I'm interested in anything from local history and practical life hacks to the odder questions that keep you up at night.",
+          "What's on your mind today?"
+        ],
+        "metrics": {
+          "client_first_audio_ms": 380,
+          "request_received": 0,
+          "transcribe_ms": 69,
+          "transcription_done": 69,
+          "generation_started": 70,
+          "first_token_ms": 182,
+          "first_sentence_ready": 306,
+          "first_audio_chunk_sent": 380,
+          "first_audio_ms": 380,
+          "last_audio_sent": 3018,
+          "generation_done": 747,
+          "generation_finish": "stop",
+          "generated_tokens": 47,
+          "client_done_ms": 3027
+        }
+      },
+      {
+        "events": {
+          "transcript": 1,
+          "sentence": 4,
+          "audio": 157,
+          "sentence_end": 4,
+          "done": 1
+        },
+        "sentences": [
+          "Well, that's a bit of a coincidence with the name,",
+          "but I'm happy to chat.",
+          "I'm interested in whatever is on your mind, whether it's a practical problem you're solving or just a curious thought you've been turning over.",
+          "What's occupying your headspace today?"
+        ],
+        "metrics": {
+          "client_first_audio_ms": 479,
+          "request_received": 0,
+          "transcribe_ms": 72,
+          "transcription_done": 72,
+          "generation_started": 73,
+          "first_token_ms": 184,
+          "first_sentence_ready": 363,
+          "first_audio_chunk_sent": 478,
+          "first_audio_ms": 478,
+          "last_audio_sent": 3840,
+          "generation_done": 1001,
+          "generation_finish": "stop",
+          "generated_tokens": 65,
+          "client_done_ms": 3848
+        }
+      }
+    ]
+  }
+}
