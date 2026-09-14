@@ -431,6 +431,12 @@ def handle(text, now=None):
     if intent is None:
         return None
     kind = intent['kind']
+    if os.name == 'nt':
+        return {
+            'spoken': 'Reminders need Linux for now.',
+            'action': 'cancel' if kind == 'cancel' else ('list' if kind == 'list' else 'create'),
+            'error': 'Reminders need Linux for now.',
+        }
     try:
         if kind in ('create', 'timer'):
             entry = create(intent)

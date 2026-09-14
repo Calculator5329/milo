@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import queue
 import re
+import os
 import sys
 import threading
 import time
@@ -20,7 +21,7 @@ try:  # noqa: E402
 except ImportError:  # Script-style imports used by server.py and the focused tests.
     from multihop import candidates, hop_reason, merge, needs_hop  # noqa: E402
 
-KIWIX_URL = 'http://127.0.0.1:8891'
+KIWIX_URL = os.environ.get('MILO_KIWIX_URL', '').rstrip('/')
 MAX_SOURCES = 4
 NAMESPACE_TITLE = re.compile(r'^(?:Category|Template|File|Wikipedia|Portal|Help|Talk|Draft|Module|User|Book|Special)\s*:', re.I)
 EXCERPT_CHARS = 700
@@ -64,12 +65,16 @@ def _tidy_excerpt(text):
 
 class LocalLibraryClient:
     def __init__(self, adapter=None, deadline=4.0):
-        self.adapter = adapter or KiwixHttpAdapter(base_url=KIWIX_URL, timeout=3)
+        base_url = os.environ.get('MILO_KIWIX_URL', KIWIX_URL).rstrip('/')
+        self.adapter = adapter if adapter is not None else (
+            KiwixHttpAdapter(base_url=base_url, timeout=3) if base_url else None)
         self.deadline = deadline
         self._dictionary = (0.0, None)
 
     def dictionary_book(self):
         """The served Wiktionary book id, rediscovered every ten minutes; None without one."""
+        if self.adapter is None:
+            return None
         checked, book = self._dictionary
         if time.monotonic() - checked < 600:
             return book
@@ -82,6 +87,8 @@ class LocalLibraryClient:
         return book
 
     def available(self):
+        if self.adapter is None:
+            return False
         try:
             self.adapter._get('/')
             return True
@@ -89,6 +96,8 @@ class LocalLibraryClient:
             return False
 
     def search(self, query, cancelled):
+        if self.adapter is None:
+            raise LibraryUnavailable('The offline library is disabled.')
         started = time.monotonic()
         term = definition_term(query)
         book = self.dictionary_book() if term else None

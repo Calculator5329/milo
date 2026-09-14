@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Iterable
 
 
-DEFAULT_ROOT = Path(os.environ.get("MILO_WORKSPACE_ROOT", "~/projects")).expanduser()
+DEFAULT_ROOT = ""
 DEFAULT_DB = Path("~/.local/state/milo/workspace-book.db").expanduser()
 MAX_FILE_BYTES = 200 * 1024
 EXCLUDED_PATH_PARTS = ("life-kb", ".orc", "node_modules", "evidence")
@@ -69,6 +69,14 @@ CREATE VIRTUAL TABLE IF NOT EXISTS book_sections USING fts5(
 def _database_path(db: str | os.PathLike[str] | None, env_name: str,
                    default: Path) -> Path:
     configured = db if db is not None else os.environ.get(env_name, str(default))
+    return Path(configured).expanduser()
+
+
+def workspace_root(root: str | os.PathLike[str] | None = None) -> Path | None:
+    """Resolve the opt-in workspace root, with an empty value meaning disabled."""
+    configured = os.environ.get("MILO_WORKSPACE_ROOT", DEFAULT_ROOT) if root is None else os.fspath(root)
+    if not str(configured).strip():
+        return None
     return Path(configured).expanduser()
 
 
@@ -361,7 +369,11 @@ def _workspace_sources(root: Path, manifest_path: Path) -> list[_Source]:
 def build(root: str | os.PathLike[str] | None = None,
           db: str | os.PathLike[str] | None = None,
           manifest: str | os.PathLike[str] | None = None) -> dict:
-    root_path = Path(root).expanduser() if root is not None else DEFAULT_ROOT
+    root_path = workspace_root(root)
+    if root_path is None:
+        return {"docs": 0, "repos": 0, "built_at": None,
+                "files_changed": 0, "files_unchanged": 0, "files_removed": 0,
+                "disabled": True}
     manifest_path = Path(manifest).expanduser() if manifest is not None else root_path / "workspace.json"
     db_path = _database_path(db, "MILO_WORKSPACE_BOOK", DEFAULT_DB)
     return _sync(db_path, _workspace_sources(root_path, manifest_path))
@@ -374,11 +386,16 @@ def status(db: str | os.PathLike[str] | None = None) -> dict:
 class WorkspaceBook:
     def __init__(self, db: str | os.PathLike[str] | None = None):
         self.db = _database_path(db, "MILO_WORKSPACE_BOOK", DEFAULT_DB)
+        self.enabled = workspace_root() is not None
 
     def search(self, query: str, limit: int = 5) -> dict:
+        if not self.enabled:
+            return {"matches": [], "elapsed_ms": 0, "disabled": True}
         return _search(self.db, query, limit, workspace_boosts=True)
 
     def read(self, path: str) -> dict:
+        if not self.enabled:
+            raise KeyError(path)
         return _read(self.db, path)
 
 

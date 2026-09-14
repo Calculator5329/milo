@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import concurrent.futures
 import json
+import os
 import pathlib
 import re
 import sys
@@ -30,7 +31,7 @@ PROBE_BUDGET_S = 0.060
 PROBE_WORKERS = 2  # kiwix-serve runs four threads; abandoned probes must never starve the real search
 PROBE_COOLDOWN_S = 30.0  # a book that missed the budget (cold pages on the slow drive) is skipped for a while
 PROBE_BOOKS_RE = re.compile(r'href="/content/((?:wikipedia|wiktionary|wikibooks|wikivoyage|archlinux|unix\.stackexchange)[^"/]*)')
-KIWIX_URL = 'http://127.0.0.1:8891'
+KIWIX_URL = os.environ.get('MILO_KIWIX_URL', '').rstrip('/')
 MAX_QUERY = 200
 
 _WORDS = lambda pattern: re.compile(r'\b(?:' + pattern + r')\b', re.I)  # noqa: E731
@@ -333,8 +334,9 @@ def _spoken_age(stamp, now=None):
 class TitleProbe:
     """Title-only Kiwix suggestions across the big books, bounded to about 30 ms."""
 
-    def __init__(self, base_url=KIWIX_URL, fetch=None, budget=PROBE_BUDGET_S):
-        self.base_url = base_url
+    def __init__(self, base_url=None, fetch=None, budget=PROBE_BUDGET_S):
+        self.base_url = (os.environ.get('MILO_KIWIX_URL', KIWIX_URL)
+                         if base_url is None else base_url).rstrip('/')
         self.fetch = fetch or self._fetch
         self.budget = budget
         self._books = (0.0, [])
@@ -396,7 +398,10 @@ class Router:
     """probe=None builds the live Kiwix title probe; probe=False turns the probe off."""
 
     def __init__(self, probe=None):
-        self.probe = TitleProbe() if probe is None else (probe or None)
+        if probe is None:
+            self.probe = TitleProbe() if os.environ.get('MILO_KIWIX_URL', KIWIX_URL).strip() else None
+        else:
+            self.probe = probe or None
 
     def decide(self, text, explicit_web=False, history=None):
         """A receipt: {'route', 'query', 'reason', 'band', 'probe', 'ms'}; route is chat, library, web,

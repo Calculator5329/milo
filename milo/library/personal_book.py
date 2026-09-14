@@ -75,6 +75,14 @@ def _load_configuration(config_path: Path) -> tuple[list[Path], list[str]]:
     return roots, globs_value
 
 
+def personal_config(config: str | os.PathLike[str] | None = None) -> Path | None:
+    """Resolve the opt-in personal book config, with an empty value meaning disabled."""
+    configured = os.environ.get("MILO_PERSONAL_BOOK_CONFIG", "") if config is None else os.fspath(config)
+    if not str(configured).strip():
+        return None
+    return Path(configured).expanduser()
+
+
 def _personal_sources(roots: Iterable[Path], globs: Iterable[str]) -> list[_Source]:
     sources: list[_Source] = []
     seen: set[Path] = set()
@@ -110,7 +118,12 @@ def build(roots: Iterable[str | os.PathLike[str]] | None = None,
           db: str | os.PathLike[str] | None = None,
           config: str | os.PathLike[str] | None = None,
           globs: Iterable[str] | None = None) -> dict:
-    config_path = Path(config).expanduser() if config is not None else DEFAULT_CONFIG
+    config_path = personal_config(config)
+    if config_path is None and roots is None:
+        return {"docs": 0, "repos": 0, "built_at": None,
+                "files_changed": 0, "files_unchanged": 0, "files_removed": 0,
+                "disabled": True}
+    config_path = config_path or DEFAULT_CONFIG
     configured_roots, configured_globs = _load_configuration(config_path)
     root_paths = ([Path(root).expanduser() for root in roots]
                   if roots is not None else configured_roots)
@@ -126,11 +139,16 @@ def status(db: str | os.PathLike[str] | None = None) -> dict:
 class PersonalBook:
     def __init__(self, db: str | os.PathLike[str] | None = None):
         self.db = _database_path(db, "MILO_PERSONAL_BOOK", DEFAULT_DB)
+        self.enabled = personal_config() is not None
 
     def search(self, query: str, limit: int = 5) -> dict:
+        if not self.enabled:
+            return {"matches": [], "elapsed_ms": 0, "disabled": True}
         return _search(self.db, query, limit, workspace_boosts=False)
 
     def read(self, path: str) -> dict:
+        if not self.enabled:
+            raise KeyError(path)
         return _read(self.db, path)
 
 

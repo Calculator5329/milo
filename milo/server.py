@@ -69,8 +69,24 @@ def freshness_latest(limit):
     return [{'title': r[0], 'url': r[1], 'source': r[2], 'as_of': r[3] or r[4], 'excerpt': ' '.join((r[5] or '').split())} for r in rows]
 DEFAULT_NUM_PREDICT = 320
 from voice_catalog import VOICE_PRESETS
-VOICES = tuple(VOICE_PRESETS)
-DEFAULT_VOICE = 'marius'
+
+
+def configured_voices():
+    raw = os.environ.get('MILO_VOICES')
+    if raw is None:
+        return tuple(VOICE_PRESETS)
+    try:
+        voices = json.loads(raw)
+    except (TypeError, ValueError):
+        return tuple(VOICE_PRESETS)
+    if not isinstance(voices, list) or not voices or any(voice not in VOICE_PRESETS for voice in voices):
+        return tuple(VOICE_PRESETS)
+    return tuple(dict.fromkeys(voices))
+
+
+VOICES = configured_voices()
+_configured_voice = os.environ.get('MILO_VOICE', 'marius').strip() or 'marius'
+DEFAULT_VOICE = _configured_voice if _configured_voice in VOICES else 'marius'
 AUDITION_TEXT = 'Hey there. I am Milo. Give me something to figure out. Big questions, small robot. We can make that work.'
 from web_search import SearchClient, SearchUnavailable, clean_sources, requested_query
 from local_search import LibraryUnavailable, LocalLibraryClient
@@ -306,7 +322,7 @@ class Engine:
         try:
             import torch
             from pocket_tts import TTSModel
-            torch.set_num_threads(2)
+            torch.set_num_threads(int(os.environ.get('MILO_TTS_THREADS', '2')))
             self.tts = TTSModel.load_model()
             for name in VOICES:
                 path = self.voice_dir / (name + '.safetensors')
@@ -814,7 +830,8 @@ def handler_for(engine, port):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--port', type=int, default=8766)
-    parser.add_argument('--voice-dir', type=Path, default=Path(os.environ.get('HF_HOME', str(Path.home()/'.cache/tmp/milo-models'))))
+    parser.add_argument('--voice-dir', type=Path, default=Path(os.environ.get(
+        'MILO_VOICE_DIR', os.environ.get('HF_HOME', str(Path.home()/'.cache/tmp/milo-models')))))
     args = parser.parse_args()
     os.environ.setdefault('HF_HOME', str(Path.home()/'.cache/tmp/milo-models'))
     os.environ['HF_HUB_OFFLINE'] = '1'

@@ -1,4 +1,4 @@
-"""One-time online step: cache the Pocket TTS model and the five preset voices into models_dir.
+"""One-time online step: cache Pocket TTS and the configured preset voices into models_dir.
 
 After this runs, Milo starts with Hugging Face offline mode on; speech never touches the network.
 Run it with the project interpreter: `python milo.py setup-voices` (docs/setup.md).
