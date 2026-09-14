@@ -1,5 +1,5 @@
 // Own-app browser smoke and layout captures. No microphone permission requested.
-const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'/home/ethan/.cache/repo-shots/node_modules/playwright');
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 const fs=require('fs'),path=require('path');
 (async()=>{const browser=await chromium.launch({headless:true});const context=await browser.newContext({viewport:{width:1320,height:1000}});const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));const dir=path.join(__dirname,'evidence');fs.mkdirSync(dir,{recursive:true});
 for(const variant of ['A','B','C']){await page.goto('http://127.0.0.1:8776/demo?variant='+variant+'&tab=presence');await page.getByRole('button',{name:'Open Firefox',exact:true}).click();await page.locator('#studyResponse').filter({hasText:'A small nod'}).waitFor();await page.locator('#study').screenshot({path:path.join(dir,'presence-'+variant+'.png')});}
