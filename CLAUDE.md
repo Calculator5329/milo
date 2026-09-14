@@ -39,7 +39,23 @@ which model fits this machine. Do not skip the doctor; it is the checklist.
    sends synthetic text and audio turns and prints p50 first-audio latency; it never opens a
    microphone. A first-audio p50 under about 600 ms on a GPU machine, or under 3 s on CPU
    only, means the pipeline is healthy. Stop the 8767 server afterwards.
-8. **Hand over.** Start `python milo.py` and tell the person: open http://127.0.0.1:8766,
+8. **Optional features, ask first.** After `READY`, offer optional features one at a time and
+   ask before downloading data or indexing a folder:
+   - Offline library, config key `kiwix_url`. The starter choice includes
+     `wikipedia_en_top_maxi` at about 7.8 GB or `wikipedia_en_100` at about 318 MB, plus
+     Wiktionary, Arch wiki, Unix Stack Exchange, Wikibooks at about 5.8 GiB, and Wikivoyage at
+     about 1.1 GiB. The full `wikipedia_en_all_maxi` archive is about 119 GB. Ask which set they
+     want, and say to check the Kiwix listing for current sizes of Wiktionary, Arch wiki, and
+     Unix Stack Exchange.
+   - News index, config key `freshness_db`. Offer the bundled feed ingest and its nightly Linux
+     timer. It also works when run manually on Windows.
+   - Corner overlay, config key `port`. Offer it only on a Linux Wayland desktop, and explain
+     that the Hyprland hold-to-talk binding needs the server running.
+   - Workspace book, config key `workspace_root`. Ask which folder to index. Never choose a
+     folder by guessing.
+   - Reminders, config key `reminders_path`. They are Linux only and use transient systemd user
+     timers automatically when the server is running.
+9. **Hand over.** Start `python milo.py` and tell the person: open http://127.0.0.1:8766,
    click Start conversation, allow the microphone, use headphones for the first try. Give
    them the one-line restart command and where the config lives. Offer the autostart option
    in `docs/setup.md` only if they ask for it.
@@ -62,5 +78,7 @@ which model fits this machine. Do not skip the doctor; it is the checklist.
 
 ## What Milo deliberately does not do
 
-No desktop actions, file access, shell, email, calendar, or memory between sessions. No paid
-API calls. Those are plug-in points for later, not gaps to fill during setup.
+Milo does not execute commands from its answer, send email, or access arbitrary files. The
+optional workspace and personal books read only the configured local folders, and remembered
+notes use only the configured Markdown file. The optional cloud provider is disabled unless the
+person configures it and asks for a careful turn.
