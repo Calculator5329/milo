@@ -134,14 +134,27 @@ class AskTests(unittest.TestCase):
         listening = listening[:listening.index('};') + 2]
         self.assertIn("if(on){client.stop();", listening)
 
-    def test_the_panel_opens_only_after_the_window_has_grown(self):
+    def test_the_robot_is_click_through_and_there_is_no_panel_or_text_box(self):
+        """Clicks on Milo must reach the window behind him (a fullscreen button under his
+        corner); the panel animation goes, speech and the bubble carry every reply."""
         overlay = (HERE / 'demo' / 'overlay.js').read_text(encoding='utf-8')
-        source = (HERE / 'demo' / 'desktop.py').read_text(encoding='utf-8')
-        self.assertIn("function expand(){bridge('expand');}", overlay)
-        self.assertIn("window.miloExpanded=()=>{document.body.dataset.expanded='true';}", overlay)
-        self.assertIn('window.miloExpanded?.()', source)
+        html = (HERE / 'demo' / 'overlay.html').read_text(encoding='utf-8')
         css = (HERE / 'demo' / 'overlay.css').read_text(encoding='utf-8')
-        self.assertIn('@keyframes panelIn', css)
+        source = (HERE / 'demo' / 'desktop.py').read_text(encoding='utf-8')
+        for gone in ('expand', 'collapse', "$('#text')", "$('#form')", "$('#hold')", "$('#minimize')"):
+            self.assertNotIn(gone, overlay)
+        for gone in ('id="panel"', 'id="text"', '<form', '<button'):
+            self.assertNotIn(gone, html)
+        self.assertNotIn('panelIn', css)
+        self.assertIn('#robot{position:absolute;bottom:0;right:0;width:108px;height:128px;border:0;padding:0;background:transparent;pointer-events:none}', css)
+        for gone in ('EXPANDED_SIZE', 'ROBOT_SIZE', 'action == "expand"', 'action == "collapse"', 'KeyboardMode.ON_DEMAND'):
+            self.assertNotIn(gone, source)
+        app = self.desktop.Desktop.__new__(self.desktop.Desktop)
+        app.size = self.desktop.COLLAPSED_SIZE
+        app.thought_rect = None
+        self.assertEqual(app.input_rectangles(), [])
+        app.thought_rect = (5, 60, 370, 90)
+        self.assertEqual(app.input_rectangles(), [(1, 56, 378, 98)])
 
     def test_a_spoken_reminder_never_opens_the_panel(self):
         overlay = (HERE / 'demo' / 'overlay.js').read_text(encoding='utf-8')

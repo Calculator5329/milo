@@ -36,8 +36,8 @@ from gi.repository import Gdk, Gio, GLib, Gtk, GtkLayerShell, WebKit2
 
 
 COLLAPSED_SIZE = (380, 330)  # room for a thought bubble above the robot; input region keeps the rest click-through
-EXPANDED_SIZE = (400, 560)
-ROBOT_SIZE = (112, 130)  # the bottom-right box that accepts clicks while collapsed
+# The robot himself never takes pointer input: clicks land on whatever sits behind him (a
+# fullscreen button, a video control). Only an open thought bubble is clickable, for copy.
 CORNER_MARGIN = 6  # px from the screen edge
 
 
@@ -62,7 +62,6 @@ class Desktop:
         self.port = port
         self.url = f"http://127.0.0.1:{port}/overlay"
         self.microphone_requested = None
-        self.expanded = False
         self.thought_rect = None
         self.size = COLLAPSED_SIZE
         self.ready = False
@@ -109,7 +108,7 @@ class Desktop:
         self.window.add(self.view)
         self.window.connect("destroy", lambda *_: Gtk.main_quit())
         self.window.connect("focus-out-event", self.focus_out)
-        self.resize(False)
+        self.resize()
         self.view.load_uri(self.url)
 
     def bus_acquired(self, connection, _name):
@@ -197,28 +196,16 @@ class Desktop:
         event("monitor fallback for " + wanted)
         return display.get_primary_monitor()
 
-    def resize(self, expanded):
-        """The collapsed layer keeps one fixed size; only the input region changes.
+    def resize(self):
+        """The layer keeps one fixed size; only the input region ever changes.
 
         Resizing the layer-shell surface for every thought bubble made Hyprland animate
         the change with its overshoot curve (a visible grow-then-shrink), and a surface
-        that covers the whole box swallowed clicks meant for windows behind it. The
-        collapsed box stays COLLAPSED_SIZE and the input region names the robot plus the
-        open bubble, so everything else passes through to the desktop.
+        that covers the whole box swallowed clicks meant for windows behind it. The box
+        stays COLLAPSED_SIZE, the keyboard is never grabbed, and the input region names
+        only the open bubble, so the robot and everything else pass through to the desktop.
         """
-        if expanded:
-            width, height = EXPANDED_SIZE
-        else:
-            width, height = COLLAPSED_SIZE
-        display = self.window.get_display()
-        native = self.window.get_window()
-        monitor = display.get_monitor_at_window(native) if native else None
-        monitor = monitor or display.get_primary_monitor() or display.get_monitor(0)
-        if expanded and monitor:
-            area = monitor.get_workarea()
-            width = min(width, max(1, area.width - 36))
-            height = min(height, max(1, area.height - 36))
-        self.expanded = expanded
+        width, height = COLLAPSED_SIZE
         self.size = (width, height)
         self.view.set_size_request(width, height)
         self.window.resize(width, height)
@@ -244,20 +231,14 @@ class Desktop:
         return tuple(values)
 
     def input_rectangles(self):
-        """Window-coordinate rectangles that accept pointer input while collapsed."""
-        width, height = self.size
-        robot_w, robot_h = ROBOT_SIZE
-        rects = [(max(0, width - robot_w), max(0, height - robot_h), robot_w, robot_h)]
-        if self.thought_rect:
-            x, y, w, h = self.thought_rect
-            pad = 4
-            rects.append((max(0, x - pad), max(0, y - pad), w + 2 * pad, h + 2 * pad))
-        return rects
+        """Window-coordinate rectangles that accept pointer input: the open bubble, nothing else."""
+        if not self.thought_rect:
+            return []
+        x, y, w, h = self.thought_rect
+        pad = 4
+        return [(max(0, x - pad), max(0, y - pad), w + 2 * pad, h + 2 * pad)]
 
     def apply_input_region(self):
-        if self.expanded:
-            self.window.input_shape_combine_region(None)
-            return
         region = cairo.Region()
         for x, y, w, h in self.input_rectangles():
             region.union(cairo.RectangleInt(int(x), int(y), int(w), int(h)))
@@ -266,13 +247,6 @@ class Desktop:
     def focus_out(self, *_args):
         GtkLayerShell.set_keyboard_mode(self.window, GtkLayerShell.KeyboardMode.NONE)
         return False
-
-    def collapse(self):
-        self.microphone_requested = None
-        GtkLayerShell.set_keyboard_mode(self.window, GtkLayerShell.KeyboardMode.NONE)
-        self.view.evaluate_javascript("window.miloCollapse?.()", -1, None, None, None, None, None)
-        self.resize(False)
-        event("collapsed")
 
     def audio_event(self, value):
         self.view.evaluate_javascript("window.miloNativeAudio?.("+json.dumps(value)+")", -1, None, None, None, None, None)
@@ -293,10 +267,6 @@ class Desktop:
             except (ValueError, KeyError, TypeError):
                 self.audio_event({"id": message.get("id"), "type": "error", "message": "Native streaming audio failed."})
                 if self.audio: self.audio.stop()
-        elif action == "keyboard-focus":
-            GtkLayerShell.set_keyboard_mode(self.window, GtkLayerShell.KeyboardMode.ON_DEMAND)
-        elif action == "keyboard-release":
-            GtkLayerShell.set_keyboard_mode(self.window, GtkLayerShell.KeyboardMode.NONE)
         elif action == "playback-error":
             print(json.dumps({"event":"playback error", "detail":str(message.get("detail"))[:250]}), flush=True)
         elif action == "audio-meter":
@@ -305,13 +275,6 @@ class Desktop:
             kind = message.get("kind")
             if kind in ("working", "transcript", "speaking", "caption", "idle", "error", "listening"):
                 event("client " + kind)
-        elif action == "expand":
-            # Grow the window first, then let the page show the panel, so it never paints clipped and jumps.
-            self.resize(True)
-            self.view.evaluate_javascript("window.miloExpanded?.()", -1, None, None, None, None, None)
-            event("expanded")
-        elif action == "collapse":
-            self.collapse()
         elif action == "thought-open":
             rect = message.get("rect")
             self.thought_rect = self.valid_rect(rect)
