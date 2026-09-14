@@ -3,8 +3,8 @@ Description=Milo health page
 After=network.target
 
 [Service]
-WorkingDirectory=%h/projects/ai/local-ai-lab/audio/milo
-ExecStart=/usr/bin/python3 -m health.server
+WorkingDirectory=%h/milo/milo
+ExecStart=%h/milo/.venv/bin/python -m health.server
 Restart=on-failure
 
 [Install]

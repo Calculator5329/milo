@@ -1,18 +1,25 @@
 # Changelog
 
+## 2026-09-13
+
+Synced the full Milo engine into the public repository and refreshed the setup
+path around the current launcher.
+
+- Added router-first calculator, unit conversion, clock, spelling, recap,
+  follow-up, freshness, workspace, personal-book, and Kiwix library behavior.
+- Added transient reminders, hearing repairs, command and link bubbles, and the
+  optional Wayland corner overlay with hold-to-talk binding.
+- Added the optional news index, remembered notes, cloud-provider boundary, and
+  214-question evaluation bank with replay services.
+- Documented Windows 11 alongside the proven Arch-based Linux path, with clear
+  Linux-only notes for systemd reminders and the Wayland overlay.
+- Removed stale checkout paths from freshness, health, and replay units.
+
 ## 2026-09-12
 
-Standalone Milo, extracted from the author's local-ai-lab experiment for distribution.
+Standalone Milo was prepared for distribution.
 
-- One-folder layout with a cross-platform launcher (`milo.py`) that finds `.venv` itself.
-- Settings moved out of the code into `milo.config.json` and `MILO_*` variables: user name,
-  model menu, voice, ports, service URLs, models directory, silence gate, TTS threads.
-- `scripts/doctor.py`: measures Python, packages, voices, Ollama, whisper.cpp, VRAM and RAM,
-  suggests a model tier, exits non-zero until the machine can run Milo.
-- `CLAUDE.md` setup contract so a coding agent can do the install from a clone.
-- Setup, model tier, and latency documentation with a reference probe reading
-  (RTX 5070 Ti, gemma4:12b: 304 ms p50 first audio on text turns, 404 ms on audio turns).
-- Offline-library lookup removed from this build (it depended on a private sibling package);
-  web lookup stays. Personal names and machine paths removed from prompts and defaults.
-- Verified on the author's CachyOS machine from a fresh venv: doctor READY, 18 unit tests,
-  probe against a fresh server on port 8767.
+- Added the one-folder launcher, config example, doctor, setup contract, model
+  tier notes, and latency probe.
+- Added the browser robot, local speech pipeline, interruption handling, and
+  loopback-only defaults.
