@@ -166,7 +166,9 @@ export function initMiloThemes({
   robotAsset = '/robot.svg',
   syncUrl = true,
 } = {}) {
-  if (!mount || document.querySelector('.milo-theme-picker')) return null;
+  if (document.querySelector('.milo-theme-picker')) return null;
+  // No mount (the corner overlay has no header or panel): apply the theme and robot art without a picker.
+  const withPicker = Boolean(mount);
 
   let current = initialTheme();
   let robotSource = null;
@@ -177,6 +179,7 @@ export function initMiloThemes({
   status.setAttribute('aria-live', 'polite');
 
   const updatePicker = picker => {
+    if (!picker) return;
     const theme = themeById.get(current);
     picker.querySelector('summary strong').textContent = theme.name;
     for (const button of picker.querySelectorAll('[data-theme-choice]')) {
@@ -228,17 +231,19 @@ export function initMiloThemes({
     return true;
   };
 
-  picker = themePicker(id => setTheme(id));
-  const compact = mount.id === 'panel';
-  picker.classList.toggle('milo-theme-picker--compact', compact);
-  picker.addEventListener('toggle', () => {
-    if (picker.open) picker.querySelector('[aria-checked="true"]')?.focus();
-  });
+  if (withPicker) {
+    picker = themePicker(id => setTheme(id));
+    const compact = mount.id === 'panel';
+    picker.classList.toggle('milo-theme-picker--compact', compact);
+    picker.addEventListener('toggle', () => {
+      if (picker.open) picker.querySelector('[aria-checked="true"]')?.focus();
+    });
 
-  const insertionPoint = compact ? mount.querySelector('.scope') : mount.querySelector('.back');
-  if (insertionPoint) mount.insertBefore(picker, insertionPoint);
-  else mount.append(picker);
-  mount.append(status);
+    const insertionPoint = compact ? mount.querySelector('.scope') : mount.querySelector('.back');
+    if (insertionPoint) mount.insertBefore(picker, insertionPoint);
+    else mount.append(picker);
+    mount.append(status);
+  }
   setTheme(current, { announce: false });
 
   const observer = new MutationObserver(records => {
@@ -251,7 +256,7 @@ export function initMiloThemes({
   observer.observe(document.body, { childList: true, subtree: true });
 
   const closeOnOutsideClick = event => {
-    if (picker.open && !picker.contains(event.target)) picker.open = false;
+    if (picker && picker.open && !picker.contains(event.target)) picker.open = false;
   };
   document.addEventListener('pointerdown', closeOnOutsideClick);
 
@@ -262,7 +267,7 @@ export function initMiloThemes({
     destroy() {
       observer.disconnect();
       document.removeEventListener('pointerdown', closeOnOutsideClick);
-      picker.remove();
+      picker?.remove();
       status.remove();
     },
   };

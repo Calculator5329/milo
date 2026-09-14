@@ -134,6 +134,17 @@ class AskTests(unittest.TestCase):
         listening = listening[:listening.index('};') + 2]
         self.assertIn("if(on){client.stop();", listening)
 
+    def test_the_overlay_theme_applies_without_a_picker_mount(self):
+        """2026-09-13: with the panel gone the theme code found no
+        mount and returned before applying anything, so Milo showed the default ivory look whatever
+        the saved preference said. The theme and robot art must apply even with no picker to place."""
+        themes = (HERE / 'demo' / 'themes.js').read_text(encoding='utf-8')
+        self.assertNotIn("if (!mount || document.querySelector('.milo-theme-picker')) return null;", themes)
+        self.assertIn('const withPicker = Boolean(mount);', themes)
+        self.assertIn("  setTheme(current, { announce: false });", themes)
+        self.assertIn("note: 'Black lacquer and signal blue'", themes)
+        self.assertIn("face: '#4fb3ff'", themes)
+
     def test_the_robot_is_click_through_and_there_is_no_panel_or_text_box(self):
         """Clicks on Milo must reach the window behind him (a fullscreen button under his
         corner); the panel animation goes, speech and the bubble carry every reply."""
