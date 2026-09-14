@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+MILO_DEMO_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+MILO_DEMO_ROOT="$(dirname -- "$MILO_DEMO_DIR")"
+MILO_DEMO_PYTHON="${MILO_PYTHON:-$HOME/.cache/tmp/milo-venv/bin/python}"
+systemctl --user reset-failed milo-demos milo-corner-demo 2>/dev/null || true
+# An exited transient unit stays loaded until it is stopped; stop it so systemd-run can create it again.
+for unit in milo-demos milo-corner-demo; do
+  if ! systemctl --user is-active --quiet "$unit" && [ "$(systemctl --user show "$unit" -p LoadState --value)" = "loaded" ]; then
+    systemctl --user stop "$unit" 2>/dev/null || true
+    systemctl --user daemon-reload
+  fi
+done
+if ! systemctl --user is-active --quiet milo-demos; then
+  systemd-run --user --collect --unit=milo-demos --setenv="HF_HOME=$HOME/.cache/tmp/milo-models" --setenv=HF_HUB_OFFLINE=1 --property="WorkingDirectory=$MILO_DEMO_ROOT" "$MILO_DEMO_PYTHON" "$MILO_DEMO_ROOT/demo_server.py"
+fi
+if ! systemctl --user is-active --quiet milo-corner-demo; then
+  systemd-run --user --collect --unit=milo-corner-demo --property="WorkingDirectory=$MILO_DEMO_DIR" --property=Restart=always --property=RestartSec=2 /usr/bin/python3 "$MILO_DEMO_DIR/desktop.py"
+fi
+printf '%s\n' 'Demos: http://127.0.0.1:8776/demo' 'Stop: systemctl --user stop milo-corner-demo milo-demos'

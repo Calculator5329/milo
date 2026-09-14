@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="refresh" content="30">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Milo health</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 24px; background: #17191c; color: #d8dde3; font: 14px/1.45 system-ui, sans-serif; }
+    main { max-width: 1100px; margin: 0 auto; }
+    h1 { margin: 0 0 4px; color: #fff; font-size: 24px; }
+    h2 { margin: 0 0 12px; color: #fff; font-size: 16px; letter-spacing: .02em; }
+    header { border-bottom: 1px solid #3a3f46; margin-bottom: 18px; padding-bottom: 12px; }
+    section { border-bottom: 1px solid #30343a; padding: 15px 0 18px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border-bottom: 1px solid #2c3036; padding: 7px 8px; text-align: left; vertical-align: top; }
+    th { color: #929aa5; font-size: 12px; font-weight: 600; }
+    .num, td.num { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .state-dot { display: inline-block; width: 9px; height: 9px; margin-right: 7px; border-radius: 50%; background: #858b93; }
+    .state-dot.up { background: #5bd47a; }
+    .state-dot.warn { background: #e3b341; }
+    .state-dot.down { background: #e05a5a; }
+    .error { color: #f09b9b; margin: 0; }
+    p { margin: 6px 0; }
+    ul, ol { margin: 8px 0 0; padding-left: 24px; }
+    li { padding: 2px 0; }
+    footer { color: #858b93; font-size: 12px; padding-top: 14px; }
+  </style>
+</head>
+<body>
+  <main>
+    <header><h1>Milo health</h1><div>Collected <span class="num">{{GENERATED_AT}}</span></div></header>
+    {{CONTENT}}
+    <footer>Loopback status view, refreshes every 30 seconds.</footer>
+  </main>
+</body>
+</html>

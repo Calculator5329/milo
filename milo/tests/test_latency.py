@@ -4,7 +4,7 @@ import pathlib
 import sys
 import unittest
 sys.path.insert(0,str(pathlib.Path(__file__).resolve().parents[1]))
-from milo.server import FIRST_CLAUSE_ARM, SILENCE_MS, SYSTEM, Turn, split_sentence, system_prompt
+from server import FIRST_CLAUSE_ARM, SILENCE_MS, SYSTEM, Turn, split_sentence, system_prompt
 
 class SplitSentenceTests(unittest.TestCase):
     def test_default_mode_waits_for_terminal_punctuation(self):

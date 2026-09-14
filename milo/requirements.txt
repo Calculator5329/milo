@@ -1,0 +1,3 @@
+# Install CPU torch separately; see README.md.
+pocket-tts==3.1.0
+ddgs==9.16.0

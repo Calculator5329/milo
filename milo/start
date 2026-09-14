@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+MILO_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+MILO_PYTHON="${MILO_PYTHON:-$HOME/.cache/tmp/milo-venv/bin/python}"
+if [[ ! -x "$MILO_PYTHON" ]]; then
+  echo "Milo's isolated Python is missing. See audio/milo/README.md for setup." >&2
+  exit 1
+fi
+export HF_HOME="$HOME/.cache/tmp/milo-models"
+export HF_HUB_OFFLINE=1
+exec "$MILO_PYTHON" "$MILO_DIR/server.py" "$@"

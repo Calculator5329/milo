@@ -1,9 +1,10 @@
-"""Explicit web queries only. Search excerpts are data; result URLs are never fetched."""
+"""Bounded web search. Search excerpts are data; result URLs are never fetched."""
 from __future__ import annotations
 
 import ipaddress
 import queue
 import re
+import sys
 import threading
 import time
 from urllib.parse import urlsplit
@@ -35,6 +36,38 @@ def public_url(value):
     return value
 
 
+LIBRARY_PREFIX = 'http://127.0.0.1:8891/content/'
+
+
+def library_url(value):
+    """Only the loopback Kiwix article path may appear as a non-public source link."""
+    return value if isinstance(value, str) and value.startswith(LIBRARY_PREFIX) and '..' not in value and len(value) <= 2000 else None
+
+
+PUBLIC_SITES = (
+    ('wikipedia', 'https://en.wikipedia.org/wiki/'),
+    ('wiktionary', 'https://en.wiktionary.org/wiki/'),
+    ('archlinux', 'https://wiki.archlinux.org/title/'),
+    ('wikibooks', 'https://en.wikibooks.org/wiki/'),
+    ('wikivoyage', 'https://en.wikivoyage.org/wiki/'),
+)
+
+
+def library_public_url(value):
+    """The public page behind a Kiwix article path, so a 'where is the page' ask gets a real link."""
+    if not library_url(value):
+        return None
+    rest = value[len(LIBRARY_PREFIX):]
+    book, _, path = rest.partition('/')
+    slug = path.rsplit('/', 1)[-1]
+    if not slug or slug.startswith('index'):
+        return None
+    for prefix, site in PUBLIC_SITES:
+        if book.startswith(prefix):
+            return site + slug
+    return None
+
+
 def clean_sources(rows):
     if not isinstance(rows, list):
         return []
@@ -42,7 +75,9 @@ def clean_sources(rows):
     for row in rows[:12]:
         if not isinstance(row, dict):
             continue
-        url = public_url(row.get('href', row.get('url')))
+        raw_url = row.get('href', row.get('url'))
+        origin = 'library' if row.get('origin') == 'library' and library_url(raw_url) else 'web'
+        url = raw_url if origin == 'library' else public_url(raw_url)
         title, excerpt = row.get('title'), row.get('body', row.get('excerpt'))
         if not url or url in seen or not isinstance(title, str) or not isinstance(excerpt, str):
             continue
@@ -50,19 +85,56 @@ def clean_sources(rows):
         excerpt = ' '.join(excerpt.split())[:1000]
         if not title or not excerpt:
             continue
-        sources.append({'id': len(sources) + 1, 'title': title, 'url': url, 'excerpt': excerpt, 'origin': 'web'})
+        source = {'id': len(sources) + 1, 'title': title, 'url': url, 'excerpt': excerpt, 'origin': origin}
+        if origin == 'library':
+            source['book'] = ' '.join(str(row.get('book', '')).split())[:80]
+            public = library_public_url(url)
+            if public:
+                source['public_url'] = public
+        sources.append(source)
         seen.add(url)
         if len(sources) == 4:
             break
     return sources
 
 
+REQUEST_START = r'^(?:hey milo[,!]?\s+)?(?:please\s+)?(?:(?:can|could|would) you\s+)?(?:please\s+)?'
+WEB_REQUEST = re.compile(
+    REQUEST_START
+    + r'(?:search (?:the )?(?:web|internet)(?: for)?|google|search google(?: for)?|search online(?: for)?|'
+      r'look online(?: for)?|check online(?: for)?|find online(?: for)?|web search:?|'
+      r'look (?:it |this |that )?up (?:online|on the (?:web|internet))(?: for)?:?|'
+      r'look up (?:online|on the (?:web|internet))(?: for)?:?|'
+      r'find (?:on the (?:web|internet)|online)(?: for)?:?|'
+      r'what does (?:the )?internet say about)\s+(.+)',
+    re.I,
+)
+LIBRARY_REQUEST = re.compile(
+    REQUEST_START
+    + r'(?:search (?:the |your |my )?(?:offline )?library(?: for)?|'
+      r'look (?:in|through) (?:the |your |my )?(?:offline )?library(?: for)?|'
+      r'check (?:the |your |my )?(?:offline )?library(?: for)?)\s+(.+)',
+    re.I,
+)
+GENERIC_REQUEST = re.compile(REQUEST_START + r'(?:search for|look up)\s+(.+)', re.I)
+
+
+def _requested(pattern, text):
+    match = pattern.match(text or '')
+    return match.group(1).strip().rstrip('?.!:,')[:400] if match else None
+
+
+def requested_web(text):
+    """Return the query only when the utterance explicitly names the public web."""
+    return _requested(WEB_REQUEST, text)
+
+
 def requested_query(text, explicit=False):
-    """No generic 'today' trigger: ordinary personal conversation stays local."""
+    """Return explicit web, library, and generic lookup queries, but never infer from 'today'."""
     if explicit:
         return text.strip()[:400]
-    match = re.match(r'^(?:hey milo[,!]?\s+)?(?:please\s+)?(?:(?:can|could|would) you\s+)?(?:please\s+)?(?:search (?:the )?(?:web|internet)(?: for)?|search for|look up|look online for|check online for|find online)\s+(.+)', text, re.I)
-    return match.group(1).strip()[:400] if match else None
+    return (requested_web(text) or _requested(LIBRARY_REQUEST, text)
+            or _requested(GENERIC_REQUEST, text))
 
 
 class SearchClient:
@@ -71,12 +143,26 @@ class SearchClient:
         self.deadline = deadline
         self.busy = threading.Lock()
 
-    @staticmethod
-    def _ddgs(query):
-        from ddgs import DDGS
-        return DDGS(timeout=5).text(query, max_results=4, backend='duckduckgo,brave', region='us-en')
+    # DuckDuckGo and Brave refuse in bursts ("No results found." within 200 ms) while the
+    # other engines keep answering, so a miss on one backend moves to the next (2026-09-13).
+    BACKENDS = ('duckduckgo,brave', 'bing', 'google', 'yahoo')
 
-    def search(self, query, cancelled):
+    @classmethod
+    def _ddgs(cls, query):
+        from ddgs import DDGS
+        failure = None
+        for backend in cls.BACKENDS:
+            try:
+                rows = DDGS(timeout=5).text(query, max_results=4, backend=backend, region='us-en')
+            except Exception as error:
+                failure = f'{backend}: {type(error).__name__}: {str(error)[:80]}'
+                continue
+            if rows:
+                return rows
+            failure = f'{backend}: empty'
+        raise SearchUnavailable(f'Every search backend failed ({failure}).')
+
+    def search(self, query, cancelled, deadline=None):
         if not self.busy.acquire(blocking=False):
             raise SearchUnavailable('The previous web lookup is still finishing. Try again in a moment.')
         result = queue.Queue(maxsize=1)
@@ -84,13 +170,16 @@ class SearchClient:
         def worker():
             try:
                 result.put(('ok', self.provider(query)))
-            except Exception:
+            except Exception as error:
+                print(f'web search failed for {query!r}: {type(error).__name__}: {str(error)[:160]}',
+                      file=sys.stderr, flush=True)
                 result.put(('error', None))
             finally:
                 self.busy.release()
 
         threading.Thread(target=worker, daemon=True).start()
-        until = time.monotonic() + self.deadline
+        wait_budget = self.deadline if deadline is None else min(self.deadline, deadline)
+        until = time.monotonic() + wait_budget
         while not cancelled.is_set():
             remaining = until - time.monotonic()
             if remaining <= 0:

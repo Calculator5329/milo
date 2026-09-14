@@ -1,0 +1,127 @@
+[
+  {
+    "name": "NPR News",
+    "url": "https://feeds.npr.org/1001/rss.xml",
+    "group": "news",
+    "enabled": true,
+    "max_items": 12
+  },
+  {
+    "name": "BBC World",
+    "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+    "group": "news",
+    "enabled": true,
+    "max_items": 12
+  },
+  {
+    "name": "Ars Technica",
+    "url": "https://feeds.arstechnica.com/arstechnica/index",
+    "group": "news",
+    "enabled": true,
+    "max_items": 10
+  },
+  {
+    "name": "Hacker News 100+",
+    "url": "https://hnrss.org/frontpage?points=100",
+    "group": "tech",
+    "enabled": true,
+    "max_items": 15
+  },
+  {
+    "name": "Lobsters",
+    "url": "https://lobste.rs/rss",
+    "group": "tech",
+    "enabled": true,
+    "max_items": 12
+  },
+  {
+    "name": "Simon Willison",
+    "url": "https://simonwillison.net/atom/everything/",
+    "group": "tech",
+    "enabled": true,
+    "max_items": 10
+  },
+  {
+    "name": "Arch Linux News",
+    "url": "https://archlinux.org/feeds/news/",
+    "group": "tech",
+    "enabled": true,
+    "max_items": 8
+  },
+  {
+    "name": "Anthropic News",
+    "url": "https://www.anthropic.com/news/rss.xml",
+    "group": "tech",
+    "enabled": false,
+    "max_items": 8,
+    "note": "returned 404 on 2026-09-12; re-enable once a working endpoint is found"
+  },
+  {
+    "name": "OpenAI News",
+    "url": "https://openai.com/news/rss.xml",
+    "group": "tech",
+    "enabled": true,
+    "max_items": 8
+  },
+  {
+    "name": "Hugging Face Blog",
+    "url": "https://huggingface.co/blog/feed.xml",
+    "group": "tech",
+    "enabled": true,
+    "max_items": 8
+  },
+  {
+    "name": "Wikipedia Current Events",
+    "url": "https://en.wikipedia.org/wiki/Portal:Current_events",
+    "group": "wiki",
+    "enabled": true,
+    "max_items": 2
+  },
+  {
+    "name": "Open-Meteo",
+    "url": "https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=3",
+    "group": "weather",
+    "enabled": true,
+    "max_items": 1
+  },
+  {
+    "name": "Stooq SPY",
+    "url": "https://stooq.com/q/l/?s=spy.us&f=sd2t2ohlcv&h&e=csv",
+    "group": "markets",
+    "enabled": false,
+    "max_items": 1,
+    "note": "returned 404 on 2026-09-12; re-enable once a working endpoint is found"
+  },
+  {
+    "name": "Stooq QQQ",
+    "url": "https://stooq.com/q/l/?s=qqq.us&f=sd2t2ohlcv&h&e=csv",
+    "group": "markets",
+    "enabled": false,
+    "max_items": 1,
+    "note": "returned 404 on 2026-09-12; re-enable once a working endpoint is found"
+  },
+  {
+    "name": "Stooq Bitcoin USD",
+    "url": "https://stooq.com/q/l/?s=btcusd&f=sd2t2ohlcv&h&e=csv",
+    "group": "markets",
+    "enabled": false,
+    "max_items": 1,
+    "note": "returned 404 on 2026-09-12; re-enable once a working endpoint is found"
+  },
+  {
+    "name": "Stooq GLD",
+    "url": "https://stooq.com/q/l/?s=gld.us&f=sd2t2ohlcv&h&e=csv",
+    "group": "markets",
+    "enabled": false,
+    "max_items": 1,
+    "note": "returned 404 on 2026-09-12; re-enable once a working endpoint is found"
+  },
+  {
+    "name": "Stooq Dow Jones",
+    "url": "https://stooq.com/q/l/?s=^dji&f=sd2t2ohlcv&h&e=csv",
+    "group": "markets",
+    "enabled": false,
+    "max_items": 1,
+    "note": "returned 404 on 2026-09-12; re-enable once a working endpoint is found"
+  }
+]

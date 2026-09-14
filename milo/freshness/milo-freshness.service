@@ -1,0 +1,9 @@
+[Unit]
+Description=Refresh Milo's recent-information index
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/projects/ai/local-ai-lab/audio/milo
+ExecStart=/usr/bin/python3 -m freshness ingest

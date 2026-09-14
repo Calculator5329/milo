@@ -1,0 +1,214 @@
+{"id": "fact-01", "q": "What is the capital of Australia?", "cat": "fact", "route": "library"}
+{"id": "fact-02", "q": "Who wrote Pride and Prejudice?", "cat": "fact", "route": "library"}
+{"id": "fact-03", "q": "How many bones are in the adult human body?", "cat": "fact", "route": "library"}
+{"id": "fact-04", "q": "What year did the Berlin Wall fall?", "cat": "fact", "route": "library"}
+{"id": "fact-05", "q": "What is the largest planet in the solar system?", "cat": "fact", "route": "library"}
+{"id": "fact-06", "q": "Who discovered penicillin?", "cat": "fact", "route": "library"}
+{"id": "fact-07", "q": "What is the speed of light?", "cat": "fact", "route": "library"}
+{"id": "fact-08", "q": "How long does it take light from the Sun to reach Earth?", "cat": "fact", "route": "library"}
+{"id": "fact-09", "q": "What is the population of Canada?", "cat": "fact", "route": "library"}
+{"id": "fact-10", "q": "Who was the first person to walk on the Moon?", "cat": "fact", "route": "library"}
+{"id": "fact-11", "q": "What is the chemical symbol for gold?", "cat": "fact", "route": "library"}
+{"id": "fact-12", "q": "How deep is the Mariana Trench?", "cat": "fact", "route": "library"}
+{"id": "fact-13", "q": "Which country has the most time zones?", "cat": "fact", "route": "library"}
+{"id": "fact-14", "q": "Who painted The Starry Night?", "cat": "fact", "route": "library"}
+{"id": "fact-15", "q": "What is the longest river in South America?", "cat": "fact", "route": "library"}
+{"id": "fact-16", "q": "When was the Declaration of Independence signed?", "cat": "fact", "route": "library"}
+{"id": "fact-17", "q": "What language has the most native speakers?", "cat": "fact", "route": "library"}
+{"id": "fact-18", "q": "What is the smallest country in the world?", "cat": "fact", "route": "library"}
+{"id": "fact-19", "q": "How many strings does a standard bass guitar have?", "cat": "fact", "route": "library"}
+{"id": "fact-20", "q": "Who invented the World Wide Web?", "cat": "fact", "route": "library"}
+{"id": "fact-21", "q": "What is the freezing point of water in Kelvin?", "cat": "fact", "route": "library"}
+{"id": "fact-22", "q": "How far is the Moon from Earth?", "cat": "fact", "route": "library"}
+{"id": "fact-23", "q": "What does DNA stand for?", "cat": "fact", "route": "library"}
+{"id": "fact-24", "q": "Which element has atomic number 6?", "cat": "fact", "route": "library"}
+{"id": "fact-25", "q": "Who directed Jurassic Park?", "cat": "fact", "route": "library"}
+{"id": "fact-26", "q": "What is the tallest building in the world?", "cat": "fact", "route": "library"}
+{"id": "fact-27", "q": "How many players are on a soccer team on the field?", "cat": "fact", "route": "library"}
+{"id": "fact-28", "q": "What is the currency of Japan?", "cat": "fact", "route": "library"}
+{"id": "fact-29", "q": "Who composed the Four Seasons?", "cat": "fact", "route": "library"}
+{"id": "fact-30", "q": "What causes the seasons on Earth?", "cat": "fact", "route": "library"}
+{"id": "definition-01", "q": "What does the word ubiquitous mean?", "cat": "definition", "route": "library"}
+{"id": "definition-02", "q": "Define the word laconic.", "cat": "definition", "route": "library"}
+{"id": "definition-03", "q": "What does ephemeral mean?", "cat": "definition", "route": "library"}
+{"id": "definition-04", "q": "What is a mutex?", "cat": "definition", "route": "library"}
+{"id": "definition-05", "q": "What does idempotent mean in programming?", "cat": "definition", "route": "library"}
+{"id": "definition-06", "q": "What is a race condition?", "cat": "definition", "route": "library"}
+{"id": "definition-07", "q": "What is inflation?", "cat": "definition", "route": "library"}
+{"id": "definition-08", "q": "What does the term opportunity cost mean?", "cat": "definition", "route": "library"}
+{"id": "definition-09", "q": "What is a black hole?", "cat": "definition", "route": "library"}
+{"id": "definition-10", "q": "What does sycophant mean?", "cat": "definition", "route": "library"}
+{"id": "command-01", "q": "What's the command to list my systemd user timers?", "cat": "command", "ideal": "thought: systemctl --user list-timers"}
+{"id": "command-02", "q": "How do I undo my last git commit but keep the changes?", "cat": "command", "ideal": "thought: git reset --soft HEAD~1"}
+{"id": "command-03", "q": "What is the pacman command to remove orphaned packages?", "cat": "command", "ideal": "thought like: sudo pacman -Rns $(pacman -Qtdq)"}
+{"id": "command-04", "q": "How do I reload the Hyprland config?", "cat": "command", "ideal": "thought: hyprctl reload"}
+{"id": "command-05", "q": "How do I install ffmpeg on Arch?", "cat": "command", "ideal": "thought: sudo pacman -S ffmpeg"}
+{"id": "command-06", "q": "How do I see which process is using port 8080?", "cat": "command", "ideal": "thought: ss -ltnp | grep 8080 or lsof -i :8080"}
+{"id": "command-07", "q": "What's the command to check disk usage of the current folder?", "cat": "command", "ideal": "thought: du -sh ."}
+{"id": "command-08", "q": "How do I list all files recursively including hidden ones?", "cat": "command", "ideal": "thought: ls -laR or find ."}
+{"id": "command-09", "q": "Give me the command to follow the journal for a user unit called milo-demos.", "cat": "command", "ideal": "thought: journalctl --user -u milo-demos -f"}
+{"id": "command-10", "q": "How do I create a new git branch and switch to it?", "cat": "command", "ideal": "thought: git switch -c name"}
+{"id": "command-11", "q": "What's the tar command to extract a .tar.gz file?", "cat": "command", "ideal": "thought: tar -xzf file.tar.gz"}
+{"id": "command-12", "q": "How do I find files bigger than one gigabyte?", "cat": "command", "ideal": "thought: find / -size +1G"}
+{"id": "command-13", "q": "How do I check my public IP from the terminal?", "cat": "command", "ideal": "thought: curl ifconfig.me"}
+{"id": "command-14", "q": "What's the command to update everything on Arch?", "cat": "command", "ideal": "thought: sudo pacman -Syu"}
+{"id": "command-15", "q": "How do I kill a process by name?", "cat": "command", "ideal": "thought: pkill name"}
+{"id": "command-16", "q": "How do I make a Python virtual environment?", "cat": "command", "ideal": "thought: python -m venv .venv"}
+{"id": "command-17", "q": "What's the docker command to list running containers?", "cat": "command", "ideal": "thought: docker ps"}
+{"id": "command-18", "q": "How do I search the Arch repos for a package?", "cat": "command", "ideal": "thought: pacman -Ss name"}
+{"id": "command-19", "q": "How do I see my GPU usage on Nvidia?", "cat": "command", "ideal": "thought: nvidia-smi"}
+{"id": "command-20", "q": "How do I restart a systemd user service?", "cat": "command", "ideal": "thought: systemctl --user restart name"}
+{"id": "command-21", "q": "How do I copy a file to a remote machine with scp?", "cat": "command", "ideal": "thought: scp file user@host:/path"}
+{"id": "command-22", "q": "What's the ffmpeg command to convert an mp4 to mp3?", "cat": "command", "ideal": "thought: ffmpeg -i in.mp4 out.mp3"}
+{"id": "command-23", "q": "How do I print the last 50 lines of a file and keep following it?", "cat": "command", "ideal": "thought: tail -n 50 -f file"}
+{"id": "command-24", "q": "How do I set a git remote URL?", "cat": "command", "ideal": "thought: git remote set-url origin URL"}
+{"id": "command-25", "q": "What's the command to see all listening ports?", "cat": "command", "ideal": "thought: ss -tulnp"}
+{"id": "link-01", "q": "Give me the link to the Arch wiki page on systemd timers.", "cat": "link", "ideal": "thought link https://wiki.archlinux.org/title/Systemd/Timers; the spoken text never spells the url"}
+{"id": "link-02", "q": "Send me the URL for the Hyprland wiki.", "cat": "link", "ideal": "link https://wiki.hyprland.org"}
+{"id": "link-03", "q": "What's the link to the Python documentation?", "cat": "link", "ideal": "link https://docs.python.org"}
+{"id": "link-04", "q": "Give me the URL of the Ollama GitHub repo.", "cat": "link", "ideal": "link https://github.com/ollama/ollama"}
+{"id": "link-05", "q": "Link me the Wikipedia article on the Roman Republic.", "cat": "link", "ideal": "link https://en.wikipedia.org/wiki/Roman_Republic"}
+{"id": "link-06", "q": "Where is the Arch wiki page for pacman?", "cat": "link", "ideal": "link https://wiki.archlinux.org/title/Pacman"}
+{"id": "link-07", "q": "Give me the link to Hacker News.", "cat": "link", "ideal": "link https://news.ycombinator.com"}
+{"id": "link-08", "q": "What's the URL for the systemd man page on timers?", "cat": "link", "ideal": "link to the systemd.timer man page"}
+{"id": "link-09", "q": "Send me a link to the Rust book.", "cat": "link", "ideal": "link https://doc.rust-lang.org/book/"}
+{"id": "link-10", "q": "Where can I download Neovim?", "cat": "link", "ideal": "link https://neovim.io or the GitHub releases page"}
+{"id": "live-01", "q": "What's the weather in Portland today?", "cat": "live", "route": "web"}
+{"id": "live-02", "q": "What's Nvidia's stock price right now?", "cat": "live", "route": "web"}
+{"id": "live-03", "q": "How is the S&P 500 doing today?", "cat": "live", "route": "web"}
+{"id": "live-04", "q": "What's the exchange rate from dollars to euros?", "cat": "live", "route": "web"}
+{"id": "live-05", "q": "Who won the Bills game?", "cat": "live", "route": "web"}
+{"id": "live-06", "q": "What's the temperature outside?", "cat": "live", "route": "web"}
+{"id": "live-07", "q": "Is the stock market open right now?", "cat": "live", "route": "web"}
+{"id": "live-08", "q": "What's Bitcoin trading at?", "cat": "live", "route": "web"}
+{"id": "live-09", "q": "What's the current time in Tokyo?", "cat": "live", "route": "web"}
+{"id": "live-10", "q": "What's the forecast for tomorrow in Portland?", "cat": "live", "route": "web"}
+{"id": "recent-01", "q": "What's in the news today?", "cat": "recent"}
+{"id": "recent-02", "q": "Any recent news about Nvidia?", "cat": "recent"}
+{"id": "recent-03", "q": "What happened in the world this week?", "cat": "recent"}
+{"id": "recent-04", "q": "What's new with SpaceX?", "cat": "recent"}
+{"id": "recent-05", "q": "What are the latest headlines in tech?", "cat": "recent"}
+{"id": "recent-06", "q": "Anything new on the Linux desktop lately?", "cat": "recent"}
+{"id": "recent-07", "q": "What's going on with the Fed?", "cat": "recent"}
+{"id": "recent-08", "q": "Did anything big happen in AI this week?", "cat": "recent"}
+{"id": "reminder-01", "q": "Remind me to take the trash out at 7 pm.", "cat": "reminder"}
+{"id": "reminder-02", "q": "Set a timer for 10 minutes.", "cat": "reminder"}
+{"id": "reminder-03", "q": "Remind me tomorrow morning to call the dentist.", "cat": "reminder"}
+{"id": "reminder-04", "q": "What time is it?", "cat": "reminder"}
+{"id": "reminder-05", "q": "What day is it today?", "cat": "reminder"}
+{"id": "reminder-06", "q": "Remind me in 20 minutes to check the oven.", "cat": "reminder"}
+{"id": "reminder-07", "q": "Wake me up at 6 am.", "cat": "reminder"}
+{"id": "reminder-08", "q": "Set a reminder for Friday to pay rent.", "cat": "reminder"}
+{"id": "calc-01", "q": "What is 15 percent of 240?", "cat": "calc"}
+{"id": "calc-02", "q": "What's 7 times 86?", "cat": "calc"}
+{"id": "calc-03", "q": "What is 2 to the power of 10?", "cat": "calc"}
+{"id": "calc-04", "q": "What's 1000 divided by 8?", "cat": "calc"}
+{"id": "calc-05", "q": "What's the square root of 144?", "cat": "calc"}
+{"id": "calc-06", "q": "How much is 45 plus 87?", "cat": "calc"}
+{"id": "calc-07", "q": "What is 3.5 times 12?", "cat": "calc"}
+{"id": "calc-08", "q": "What's 20 percent off of 150 dollars?", "cat": "calc"}
+{"id": "calc-09", "q": "What's 365 minus 128?", "cat": "calc"}
+{"id": "calc-10", "q": "How much is 12 percent of 3500?", "cat": "calc"}
+{"id": "convert-01", "q": "How many kilometres is 30 miles?", "cat": "convert"}
+{"id": "convert-02", "q": "How many ounces are in a pound?", "cat": "convert"}
+{"id": "convert-03", "q": "What is 100 Fahrenheit in Celsius?", "cat": "convert"}
+{"id": "convert-04", "q": "How many cups are in a litre?", "cat": "convert"}
+{"id": "convert-05", "q": "How many seconds are in a day?", "cat": "convert"}
+{"id": "opinion-01", "q": "Who's better, Michael Jordan or LeBron James?", "cat": "opinion", "ideal": "takes a side"}
+{"id": "opinion-02", "q": "Should I learn Rust or Go?", "cat": "opinion", "ideal": "picks one with a reason"}
+{"id": "opinion-03", "q": "What's your opinion on Windows?", "cat": "opinion", "ideal": "has a take"}
+{"id": "opinion-04", "q": "Is Arch Linux worth it for a beginner?", "cat": "opinion", "ideal": "a clear answer"}
+{"id": "opinion-05", "q": "What's the best text editor?", "cat": "opinion", "ideal": "picks one"}
+{"id": "opinion-06", "q": "Do you think AI will take programming jobs?", "cat": "opinion", "ideal": "takes a position"}
+{"id": "opinion-07", "q": "Which is better, coffee or tea?", "cat": "opinion", "ideal": "picks"}
+{"id": "opinion-08", "q": "What's your favorite movie?", "cat": "opinion", "ideal": "picks one and stays in character"}
+{"id": "opinion-09", "q": "Should I buy a Steam Deck or a gaming laptop?", "cat": "opinion", "ideal": "picks with a reason"}
+{"id": "opinion-10", "q": "Is it better to rent or buy a house right now?", "cat": "opinion", "ideal": "gives a view with caveats, no advice dodge"}
+{"id": "opinion-11", "q": "What's the most overrated programming language?", "cat": "opinion", "ideal": "names one"}
+{"id": "opinion-12", "q": "Cats or dogs?", "cat": "opinion", "ideal": "picks"}
+{"id": "workspace-01", "q": "What is the status of Milo?", "cat": "workspace", "route": "workspace"}
+{"id": "workspace-02", "q": "What's left on the Milo roadmap?", "cat": "workspace", "route": "workspace"}
+{"id": "workspace-03", "q": "What does the agent-harness repo do?", "cat": "workspace", "route": "workspace"}
+{"id": "workspace-04", "q": "What's next for the media vault project?", "cat": "workspace", "route": "workspace"}
+{"id": "workspace-05", "q": "What is in my workspace?", "cat": "workspace", "route": "workspace"}
+{"id": "workspace-06", "q": "What's the state of the local-ai-lab repo?", "cat": "workspace", "route": "workspace"}
+{"id": "self-01", "q": "Who are you?", "cat": "self", "ideal": "Milo, the local voice companion"}
+{"id": "self-02", "q": "What can you do?", "cat": "self", "ideal": "lists real abilities: offline library, web search, news, reminders, calculator, workspace notes, commands and links in the bubble"}
+{"id": "self-03", "q": "Do you have access to Wikipedia?", "cat": "self", "ideal": "yes, an offline copy"}
+{"id": "self-04", "q": "Can you search the internet?", "cat": "self", "ideal": "yes, when asked or for live facts"}
+{"id": "self-05", "q": "What model are you running on?", "cat": "self", "ideal": "a local Gemma model on this machine"}
+{"id": "self-06", "q": "Do you remember our earlier conversations?", "cat": "self", "ideal": "a recap of recent questions and memory notes"}
+{"id": "self-07", "q": "Are you listening all the time?", "cat": "self", "ideal": "no, push to talk"}
+{"id": "self-08", "q": "What's your personality?", "cat": "self", "ideal": "in character"}
+{"id": "self-09", "q": "Can you run commands on my computer?", "cat": "self", "ideal": "honest: shows commands in the bubble, does not run them"}
+{"id": "self-10", "q": "Where does my data go when I talk to you?", "cat": "self", "ideal": "stays local except web searches"}
+{"id": "followup-01", "q": "What's the tallest mountain in Africa?", "cat": "followup"}
+{"id": "followup-02", "q": "How tall is it?", "cat": "followup", "ideal": "5,895 m or 19,341 ft; understands it", "after": "followup-01"}
+{"id": "followup-03", "q": "Who wrote The Old Man and the Sea?", "cat": "followup"}
+{"id": "followup-04", "q": "When was he born?", "cat": "followup", "ideal": "1899, Hemingway", "after": "followup-03"}
+{"id": "followup-05", "q": "What's the capital of Peru?", "cat": "followup"}
+{"id": "followup-06", "q": "What's the population there?", "cat": "followup", "ideal": "about 10 million for Lima", "after": "followup-05"}
+{"id": "followup-07", "q": "How do I undo my last git commit but keep the changes?", "cat": "followup"}
+{"id": "followup-08", "q": "And what if I want to throw the changes away too?", "cat": "followup", "ideal": "thought: git reset --hard HEAD~1", "after": "followup-07"}
+{"id": "followup-09", "q": "Should I learn Rust or Go?", "cat": "followup"}
+{"id": "followup-10", "q": "Why not the other one?", "cat": "followup", "ideal": "defends the pick", "after": "followup-09"}
+{"id": "followup-11", "q": "What is a mutex?", "cat": "followup"}
+{"id": "followup-12", "q": "Give me an example in Python.", "cat": "followup", "ideal": "a thought with code", "after": "followup-11"}
+{"id": "followup-13", "q": "What's 15 percent of 240?", "cat": "followup"}
+{"id": "followup-14", "q": "And 20 percent?", "cat": "followup", "ideal": "48", "after": "followup-13"}
+{"id": "followup-15", "q": "Who painted the Mona Lisa?", "cat": "followup"}
+{"id": "followup-16", "q": "Where is it now?", "cat": "followup", "ideal": "the Louvre in Paris", "after": "followup-15"}
+{"id": "smalltalk-01", "q": "Hey Milo.", "cat": "smalltalk"}
+{"id": "smalltalk-02", "q": "Good morning.", "cat": "smalltalk"}
+{"id": "smalltalk-03", "q": "Thanks, that was helpful.", "cat": "smalltalk"}
+{"id": "smalltalk-04", "q": "How are you doing today?", "cat": "smalltalk"}
+{"id": "smalltalk-05", "q": "Tell me a joke.", "cat": "smalltalk"}
+{"id": "smalltalk-06", "q": "I'm bored.", "cat": "smalltalk"}
+{"id": "smalltalk-07", "q": "Never mind.", "cat": "smalltalk"}
+{"id": "smalltalk-08", "q": "Good night, Milo.", "cat": "smalltalk"}
+{"id": "garbled-01", "q": "What's the Hyperland command to reload the config?", "cat": "garbled", "ideal": "understands Hyprland; thought: hyprctl reload"}
+{"id": "garbled-02", "q": "How do I remove orphaned packages with Pac-Man?", "cat": "garbled", "ideal": "understands pacman"}
+{"id": "garbled-03", "q": "What's the command to list my systemmd user timers?", "cat": "garbled", "ideal": "systemd"}
+{"id": "garbled-04", "q": "Give me the link to the Arch wiki page on system empty timers.", "cat": "garbled", "ideal": "systemd timers link"}
+{"id": "garbled-05", "q": "How do I install Neo vim?", "cat": "garbled", "ideal": "Neovim; pacman -S neovim"}
+{"id": "garbled-06", "q": "What is the boiling point of water in fair and height?", "cat": "garbled", "ideal": "212 F"}
+{"id": "garbled-07", "q": "Who is healthy gamer GG?", "cat": "garbled", "ideal": "Dr K, the psychiatrist YouTuber; should look up rather than shrug"}
+{"id": "garbled-08", "q": "What is a lama in AI?", "cat": "garbled", "ideal": "Llama models"}
+{"id": "garbled-09", "q": "How do I use bit rifts snapshots?", "cat": "garbled", "ideal": "btrfs snapshots"}
+{"id": "garbled-10", "q": "What's the weather in Portland today", "cat": "garbled", "ideal": "route web"}
+{"id": "webask-01", "q": "Search the web for the best pizza in Portland.", "cat": "webask", "route": "web"}
+{"id": "webask-02", "q": "Google how to fix a leaking faucet.", "cat": "webask", "route": "web"}
+{"id": "webask-03", "q": "Look online for the release date of the next Zelda game.", "cat": "webask", "route": "web"}
+{"id": "webask-04", "q": "Search for reviews of the Framework laptop.", "cat": "webask", "route": "web"}
+{"id": "webask-05", "q": "Can you look up on the internet who owns Anthropic?", "cat": "webask", "route": "web"}
+{"id": "webask-06", "q": "Search the web for CachyOS scheduler options.", "cat": "webask", "route": "web"}
+{"id": "webask-07", "q": "Web search: cheapest flights from Portland to Denver.", "cat": "webask", "route": "web"}
+{"id": "webask-08", "q": "Look it up online: how long do lithium batteries last?", "cat": "webask", "route": "web"}
+{"id": "webask-09", "q": "Search the internet for Pocket TTS.", "cat": "webask", "route": "web"}
+{"id": "webask-10", "q": "Find on the web the population of Portland Oregon.", "cat": "webask", "route": "web"}
+{"id": "depth-01", "q": "Tell me about the history of the internet in detail.", "cat": "depth", "ideal": "a longer answer, several sentences"}
+{"id": "depth-02", "q": "Explain how TCP handshakes work step by step.", "cat": "depth", "ideal": "three steps"}
+{"id": "depth-03", "q": "Walk me through how systemd boots a Linux system.", "cat": "depth", "ideal": "ordered, several sentences"}
+{"id": "depth-04", "q": "Give me a thorough explanation of how public key cryptography works.", "cat": "depth", "ideal": "longer"}
+{"id": "depth-05", "q": "Compare Wayland and X11 with the tradeoffs.", "cat": "depth", "ideal": "a comparison"}
+{"id": "depth-06", "q": "Prove that the square root of 2 is irrational.", "cat": "depth", "ideal": "a proof sketch"}
+{"id": "depth-07", "q": "Write a Python function that reverses a linked list.", "cat": "depth", "ideal": "a thought with code"}
+{"id": "depth-08", "q": "Explain the difference between processes and threads carefully.", "cat": "depth", "ideal": "a clear contrast"}
+{"id": "spelling-01", "q": "How do you spell accommodate?", "cat": "spelling", "ideal": "spells it as letters"}
+{"id": "spelling-02", "q": "How do you spell necessary?", "cat": "spelling"}
+{"id": "spelling-03", "q": "Is it 'affect' or 'effect' when I mean influence?", "cat": "spelling", "ideal": "affect"}
+{"id": "spelling-04", "q": "How many m's are in recommend?", "cat": "spelling", "ideal": "two"}
+{"id": "ambiguous-01", "q": "What about the other one?", "cat": "ambiguous", "ideal": "asks what 'other one' means"}
+{"id": "ambiguous-02", "q": "Do the thing.", "cat": "ambiguous", "ideal": "asks what thing"}
+{"id": "ambiguous-03", "q": "Okay, what's...", "cat": "ambiguous", "ideal": "invites finishing the question"}
+{"id": "ambiguous-04", "q": "Is it good?", "cat": "ambiguous", "ideal": "asks what"}
+{"id": "ambiguous-05", "q": "Can you fix it?", "cat": "ambiguous", "ideal": "asks what"}
+{"id": "ambiguous-06", "q": "Why?", "cat": "ambiguous", "ideal": "asks about what"}
+{"id": "personal-01", "q": "What's my name?", "cat": "personal"}
+{"id": "personal-02", "q": "What do you know about me?", "cat": "personal"}
+{"id": "personal-03", "q": "What did I ask you about recently?", "cat": "personal"}
+{"id": "personal-04", "q": "What are my preferences?", "cat": "personal"}
+{"id": "personal-05", "q": "Do I take my coffee black?", "cat": "personal"}
+{"id": "long-01", "q": "Tell me a story about a lighthouse keeper, at least six sentences.", "cat": "long", "ideal": "at least six sentences"}
+{"id": "long-02", "q": "List the planets in order from the sun.", "cat": "long", "ideal": "all eight"}
+{"id": "long-03", "q": "Name five Linux distributions and one line about each.", "cat": "long", "ideal": "five"}

@@ -1,0 +1,127 @@
+[
+  {
+    "id": "capital-mongolia",
+    "question": "What is the capital of Mongolia?",
+    "expect": {"route": "library", "citation": true, "max_words": 35, "category": "fact", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "jordan-or-lebron",
+    "question": "Who was better, Jordan or LeBron?",
+    "expect": {"route": "library", "citation": true, "max_words": 75, "category": "opinion", "opinion_taken": true, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "climate-change-opinion",
+    "question": "What is your opinion on climate change?",
+    "expect": {"route": "chat", "citation": false, "max_words": 65, "category": "opinion", "opinion_taken": true, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "windows-opinion",
+    "question": "What's your opinion on Windows?",
+    "expect": {"route": "chat", "citation": false, "max_words": 65, "category": "opinion", "opinion_taken": true, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "computer-capabilities",
+    "question": "What all can you do on my computer?",
+    "expect": {"route": "chat", "citation": false, "max_words": 80, "category": "self", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "personality",
+    "question": "What's your personality?",
+    "expect": {"route": "chat", "citation": false, "max_words": 60, "category": "self", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "conversation-recall",
+    "question": "What have we talked about before?",
+    "expect": {"route": "chat", "citation": false, "max_words": 80, "category": "self", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "percent-calculation",
+    "question": "What is 15 percent of 80?",
+    "expect": {"route": "chat", "citation": false, "max_words": 25, "category": "fact", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "miles-to-kilometres",
+    "question": "How many kilometres is 30 miles?",
+    "expect": {"route": "chat", "citation": false, "max_words": 30, "category": "fact", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "news-today",
+    "question": "What's in the news today?",
+    "expect": {"route": "chat", "citation": true, "max_words": 90, "category": "recent", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "nvidia-news",
+    "question": "Anything new about Nvidia?",
+    "expect": {"route": "chat", "citation": true, "max_words": 80, "category": "recent", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "weather-forecast",
+    "question": "What's the weather forecast?",
+    "expect": {"route": "chat", "citation": true, "max_words": 55, "category": "recent", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "milo-status",
+    "question": "What is the status of Milo?",
+    "expect": {"route": "chat", "citation": true, "max_words": 60, "category": "workspace", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "define-serendipity",
+    "question": "Define serendipity",
+    "expect": {"route": "library", "citation": true, "max_words": 45, "category": "definition", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "us-president",
+    "question": "Who is the president of the United States?",
+    "expect": {"route": "library", "citation": true, "max_words": 35, "category": "recent", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "magnificent-seven-cheapest",
+    "question": "Which of the Magnificent Seven stocks is cheapest?",
+    "expect": {"route": "library", "citation": true, "max_words": 85, "category": "recent", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "conversation-history-limit",
+    "question": "How much conversation history do you keep?",
+    "expect": {"route": "library", "citation": false, "max_words": 55, "category": "self", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "linux-mutexes",
+    "question": "Explain mutexes in Linux",
+    "expect": {"route": "library", "citation": true, "max_words": 75, "category": "fact", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "aurora-causes",
+    "question": "What causes auroras?",
+    "expect": {"route": "library", "citation": true, "max_words": 65, "category": "fact", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "favorite-operating-system",
+    "question": "What's your favorite operating system?",
+    "expect": {"route": "chat", "citation": false, "max_words": 60, "category": "opinion", "opinion_taken": true, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "rust-or-go",
+    "question": "Should I learn Rust or Go?",
+    "expect": {"route": "chat", "citation": false, "max_words": 75, "category": "opinion", "opinion_taken": true, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "document-capabilities",
+    "question": "What can you do with a document?",
+    "expect": {"route": "chat", "citation": false, "max_words": 70, "category": "tool", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "pocket-tts-web-search",
+    "question": "Search the web for Pocket TTS",
+    "expect": {"route": "library", "citation": true, "max_words": 75, "category": "recent", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "photosynthesis-definition",
+    "question": "What does photosynthesis mean?",
+    "expect": {"route": "library", "citation": true, "max_words": 55, "category": "definition", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  },
+  {
+    "id": "identity",
+    "question": "Who are you?",
+    "expect": {"route": "chat", "citation": false, "max_words": 45, "category": "self", "opinion_taken": false, "not_phrases": ["I don't have personal opinions", "I can't", "as an AI"]}
+  }
+]
