@@ -8,8 +8,10 @@ A voice companion that runs entirely on your computer. You talk, it talks back, 
 cut in while it is speaking. Transcription, the language model and the voice all run locally.
 The internet is used only when you say "look up ...", and then only your search query leaves.
 
-Speech starts about 300 to 400 ms after you finish talking on a machine with a mid-range GPU
-(`docs/latency.md` has the measurements).
+The hard part of a local voice assistant is the gap after you stop talking. On a
+machine where the model fits in VRAM, Milo starts speaking about 300 ms after a typed turn
+and about 400 ms after a spoken one. `docs/latency.md` lists the measurements and what each
+change was worth.
 
 ## Set it up with an agent
 
@@ -18,8 +20,11 @@ Clone the repo, open it in Claude Code or any coding agent that reads `CLAUDE.md
 > Set up Milo on this machine.
 
 The agent runs the doctor, installs what is missing, picks a model that fits your GPU, caches
-the voices, and proves one spoken turn works before handing you the URL. Windows 11 and
-Arch-based Linux are the tested targets.
+the voices, and proves one spoken turn works before handing you the URL.
+
+Arch-based Linux is where Milo runs today. Windows 11 is documented command by command in
+`docs/setup.md` and is not yet proven on someone else's machine, which is the top item in
+`docs/roadmap.md`.
 
 ## Set it up by hand
 
@@ -66,16 +71,20 @@ to the first word. And Pocket TTS runs on two CPU threads, so the GPU stays free
 
 ## What you get
 
-- **Interruptible.** Speak over it or press Escape. The turn is cancelled between audio
-  chunks, and only sentences you actually heard stay in the conversation.
-- **The rig.** An SVG robot with expressions tied to state (idle, listening, thinking,
-  speaking) and a mouth driven by playback amplitude. Two looks, plain SVG and CSS in `web/`.
-- **Voices.** Five Pocket TTS presets to audition in Settings, plus a "small speaker" filter
-  that makes any of them sound like it comes from the robot.
-- **Web lookup on request.** "Look up ..." sends the query to DuckDuckGo or Brave, no API
-  key. Milo answers from the snippets, shows the sources, and treats them as quoted text,
-  never as instructions.
-- **Nothing kept.** No transcripts or audio on disk. The conversation lives in the tab.
+You can talk over Milo or press Escape. The turn is cancelled between audio chunks, and only
+the sentences you actually heard stay in the conversation, so it never refers back to
+something it was cut off before saying. Nothing is written to disk: no transcripts, no audio.
+The conversation lives in the browser tab and is gone when you close it.
+
+The robot is plain SVG and CSS in `web/`, in two builds, with expressions tied to state
+(idle, listening, thinking, speaking) and a mouth driven by the amplitude of whatever is
+currently playing. Settings holds five Pocket TTS voices to audition and a "small speaker"
+filter that makes any of them sound like it comes out of the robot rather than a narrator.
+Finding a voice that actually reads as a small robot is still open work.
+
+Saying "look up ..." sends that query, and only that query, to DuckDuckGo or Brave without an
+API key. Milo answers from the snippets, shows you the sources, and treats the text it got
+back as quoted material rather than as instructions.
 
 ## Which model
 
@@ -87,6 +96,8 @@ to the first word. And Pocket TTS runs on two CPU threads, so the GPU stays free
 | 16 GB, patient | `gpt-oss:20b` (reasons first, slower first word) |
 | 6 to 8 GB | `gemma4:4b` |
 | CPU only, 16 GB RAM | `gemma4:4b` or `qwen2.5:3b` |
+
+CPU-only works. It just thinks for longer before it speaks.
 
 ## Commands
 
@@ -110,5 +121,5 @@ paid API calls. The system prompt tells the model so, and it never pretends othe
 
 ## License
 
-MIT. Pocket TTS weights are CC-BY-4.0 from Kyutai; whisper.cpp and Ollama carry their own
-licenses; see `docs/voices-and-upstream.md`.
+MIT. Pocket TTS, whisper.cpp and Ollama carry their own licenses, and the voice presets come
+with their own terms; `docs/voices-and-upstream.md` has the upstream sources.
