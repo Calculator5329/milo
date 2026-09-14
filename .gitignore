@@ -4,3 +4,5 @@ __pycache__/
 milo.config.json
 models/
 evidence/local/
+# agent-orchestrator local state
+.orc/
