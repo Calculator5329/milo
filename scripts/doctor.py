@@ -9,12 +9,14 @@ start, 1 when something required is missing. Nothing here downloads, installs, o
 from __future__ import annotations
 
 import argparse
+import datetime
 import importlib
 import json
 import os
 import platform
 import re
 import shutil
+import sqlite3
 import subprocess
 import sys
 import urllib.error
@@ -23,6 +25,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from milo import config  # noqa: E402
+from milo.voice_catalog import VOICE_PRESETS  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -110,8 +113,93 @@ def check_imports():
 
 def check_voices(settings):
     root = Path(settings['models_dir'])
-    missing = [v for v in settings['voices'] if not (root / (v + '.safetensors')).is_file()]
-    return {'models_dir': str(root), 'missing': missing, 'fixture': (root / 'milo-hello.wav').is_file()}
+    configured = [voice for voice in settings['voices'] if voice in VOICE_PRESETS]
+    missing = [voice for voice in configured if not (root / (voice + '.safetensors')).is_file()]
+    return {'models_dir': str(root), 'voices': configured, 'missing': missing,
+            'fixture': (root / 'milo-hello.wav').is_file()}
+
+
+def check_kiwix(settings):
+    base_url = settings['kiwix_url'].rstrip('/')
+    if not base_url:
+        return {'enabled': False, 'reachable': False, 'books': None, 'error': None}
+    status, body = http(base_url + '/catalog/v2/entries?count=100', timeout=3)
+    if status != 200:
+        root_status, root_body = http(base_url + '/', timeout=2)
+        return {'enabled': True, 'reachable': root_status is not None, 'books': None,
+                'error': None if root_status is not None else (root_body or body or f'HTTP {status}')}
+    books = len(set(re.findall(r'href=["\']/content/([^/"\']+)', body)))
+    if books == 0:
+        books = len(re.findall(r'<entry\b', body))
+    return {'enabled': True, 'reachable': True, 'books': books, 'error': None}
+
+
+def _timestamp_age_hours(value):
+    if not value:
+        return None
+    try:
+        parsed = datetime.datetime.fromisoformat(str(value).replace('Z', '+00:00'))
+    except (TypeError, ValueError):
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=datetime.timezone.utc)
+    now = datetime.datetime.now(datetime.timezone.utc)
+    return round(max(0.0, (now - parsed.astimezone(datetime.timezone.utc)).total_seconds()) / 3600, 1)
+
+
+def check_freshness(settings):
+    path = Path(settings['freshness_db']).expanduser()
+    if not path.is_file():
+        return {'path': str(path), 'present': False, 'docs': 0, 'newest': None,
+                'newest_age_hours': None, 'error': None}
+    try:
+        uri = path.resolve().as_uri() + '?mode=ro'
+        with sqlite3.connect(uri, uri=True) as connection:
+            docs, newest = connection.execute(
+                'SELECT COUNT(*), MAX(COALESCE(published, fetched)) FROM docs'
+            ).fetchone()
+        return {'path': str(path), 'present': True, 'docs': docs, 'newest': newest,
+                'newest_age_hours': _timestamp_age_hours(newest), 'error': None}
+    except (OSError, sqlite3.Error) as error:
+        return {'path': str(path), 'present': True, 'docs': None, 'newest': None,
+                'newest_age_hours': None, 'error': str(error)}
+
+
+def check_overlay():
+    """The corner overlay (milo/demo/desktop.py) needs GTK 3, gtk-layer-shell, WebKit2GTK 4.1 and pycairo."""
+    if platform.system() != 'Linux':
+        return {'platform': False, 'gi': False, 'gtk3': False, 'layer_shell': False, 'webkit': False,
+                'cairo': False, 'note': 'The corner overlay is Linux-only.'}
+    result = {'platform': True, 'gi': False, 'gtk3': False, 'layer_shell': False, 'webkit': False,
+              'cairo': False, 'note': None}
+    try:
+        gi = importlib.import_module('gi')
+        result['gi'] = True
+        gi.require_version('Gtk', '3.0')
+        importlib.import_module('gi.repository.Gtk')
+        result['gtk3'] = True
+        gi.require_version('GtkLayerShell', '0.1')
+        importlib.import_module('gi.repository.GtkLayerShell')
+        result['layer_shell'] = True
+        gi.require_version('WebKit2', '4.1')
+        importlib.import_module('gi.repository.WebKit2')
+        result['webkit'] = True
+    except Exception as error:
+        result['note'] = type(error).__name__
+    try:
+        importlib.import_module('cairo')
+        result['cairo'] = True
+    except Exception as error:
+        result['note'] = result['note'] or type(error).__name__
+    return result
+
+
+def check_reminder_support():
+    if platform.system() != 'Linux':
+        return {'available': False, 'path': None, 'note': 'Reminders need Linux for now.'}
+    executable = shutil.which('systemd-run')
+    return {'available': bool(executable), 'path': executable,
+            'note': None if executable else 'systemd-run --user is unavailable, so reminders are disabled.'}
 
 
 def check_ollama(settings):
@@ -166,6 +254,10 @@ def main():
         'voices': check_voices(settings),
         'ollama': check_ollama(settings),
         'whisper': check_whisper(settings),
+        'kiwix': check_kiwix(settings),
+        'freshness': check_freshness(settings),
+        'overlay': check_overlay(),
+        'reminders': check_reminder_support(),
         'hardware': {'gpu': gpu, 'ram_gb': ram},
         'suggested_model': {'tag': suggestion, 'why': why, 'matches_config': suggestion == settings['model']},
         'server': check_running(settings),
@@ -181,6 +273,8 @@ def main():
 
     def line(ok, text):
         print(('  ok   ' if ok else '  MISSING ') + text)
+    def optional(text):
+        print('  opt  ' + text)
     p = report['python']
     line(p['ok'], f"Python {p['version']} at {p['executable']}" + (f"  ({p['note']})" if p['note'] else ''))
     line(report['venv']['present'], f".venv {'present' if report['venv']['present'] else 'not created'} at {ROOT / '.venv'}")
@@ -189,6 +283,7 @@ def main():
     c = report['config']
     line(config_error is None, f"config {c['path']} {'(file present)' if c['present'] else '(defaults; no file yet)'}"
          + (f'  ERROR {config_error}' if config_error else f"  model={c['model']} voice={c['voice']} name={c['user_name'] or '(none)'} port={c['port']}"))
+    optional(f"milo.config.json {'present' if c['present'] else 'not present, built-in defaults are active'}")
     v = report['voices']
     line(not v['missing'], f"voices in {v['models_dir']}: " + ('all cached' if not v['missing'] else f"missing {v['missing']} (run: python milo.py setup-voices)"))
     o = report['ollama']
@@ -198,6 +293,34 @@ def main():
         print(f"         menu pulled: {o['pulled'] or 'none'}; not pulled: {o['missing'] or 'none'}")
     w = report['whisper']
     line(w['reachable'], f"whisper.cpp server at {settings['whisper_url']}: " + ('reachable' if w['reachable'] else f"unreachable ({w['error']})"))
+    k = report['kiwix']
+    if not k['enabled']:
+        optional('offline Kiwix library disabled, set kiwix_url to enable it')
+    elif k['reachable']:
+        count = f", {k['books']} books in catalog" if k['books'] is not None else ''
+        optional(f"Kiwix at {settings['kiwix_url']}: reachable{count}")
+    else:
+        optional(f"Kiwix at {settings['kiwix_url']}: unavailable ({k['error']})")
+    fresh = report['freshness']
+    if not fresh['present']:
+        optional(f"freshness database not present at {fresh['path']}")
+    elif fresh['error']:
+        optional(f"freshness database at {fresh['path']} could not be read ({fresh['error']})")
+    else:
+        age = (f", newest row {fresh['newest_age_hours']} hours old"
+               if fresh['newest_age_hours'] is not None else ', no dated rows')
+        optional(f"freshness database at {fresh['path']}: {fresh['docs']} rows{age}")
+    overlay = report['overlay']
+    if overlay['platform']:
+        optional('Linux corner overlay dependencies (python-gobject gtk3 gtk-layer-shell webkit2gtk-4.1 python-cairo): '
+                 f"gi={'yes' if overlay['gi'] else 'no'}, Gtk 3={'yes' if overlay['gtk3'] else 'no'}, "
+                 f"GtkLayerShell={'yes' if overlay['layer_shell'] else 'no'}, WebKit2={'yes' if overlay['webkit'] else 'no'}, "
+                 f"cairo={'yes' if overlay['cairo'] else 'no'}")
+    else:
+        optional(overlay['note'])
+    reminder_support = report['reminders']
+    optional(('systemd-run --user available at ' + reminder_support['path'])
+             if reminder_support['available'] else reminder_support['note'])
     g = report['hardware']['gpu']
     print(f"  info GPU: {g['name'] or g['vendor']}" + (f", {g['vram_gb']} GB VRAM" if g['vram_gb'] else '') + (f"  ({g['note']})" if g['note'] else ''))
     print(f"  info RAM: {ram} GB" if ram else '  info RAM: unknown')

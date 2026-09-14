@@ -1,8 +1,8 @@
 """Repeatable stage-latency probe: N synthetic text and audio turns, p50/p95 per stage, JSON evidence.
 
 Targets MILO_URL (default http://127.0.0.1:8767, a test server, never the live 8766 unit).
-Uses the synthetic milo-hello.wav fixture from setup.py; never opens a microphone.
-    python3 audio/milo/tests/latency_probe.py --turns 8 --label baseline
+Uses the synthetic milo-hello.wav fixture from setup-voices; never opens a microphone.
+    python milo.py probe --turns 8 --label baseline
 """
 import argparse
 import base64
@@ -18,7 +18,10 @@ import wave
 from pathlib import Path
 
 BASE = os.environ.get('MILO_URL', 'http://127.0.0.1:8767')
-FIXTURE = Path(os.environ.get('MILO_FIXTURE', str(Path.home() / '.cache/tmp/milo-models/milo-hello.wav')))
+FIXTURE = Path(os.environ.get(
+    'MILO_FIXTURE',
+    str(Path(os.environ.get('MILO_VOICE_DIR', Path.home() / '.cache/tmp/milo-models')) / 'milo-hello.wav'),
+))
 STAGES = ['request_received', 'transcription_done', 'generation_started', 'first_token_ms', 'first_sentence_ready',
           'first_audio_chunk_sent', 'generation_done', 'last_audio_sent', 'client_first_audio_ms', 'client_done_ms']
 PROMPTS = ['Say hello in one short sentence.',
@@ -109,7 +112,8 @@ def shell(cmd):
 
 def gpu_state():
     try:
-        with urllib.request.urlopen('http://127.0.0.1:11434/api/ps', timeout=5) as r:
+        ollama_url = os.environ.get('MILO_OLLAMA_URL', 'http://127.0.0.1:11434').rstrip('/')
+        with urllib.request.urlopen(ollama_url + '/api/ps', timeout=5) as r:
             ps = json.load(r)
     except Exception as exc:
         ps = {'error': type(exc).__name__}

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Review-branch demos. Separate loopback server; existing Milo and Jarvis stay intact."""
+"""Milo v3 loopback server for the notebook UI, overlay API and voice engine."""
 from __future__ import annotations
 import argparse
 import base64
@@ -15,7 +15,7 @@ from urllib.parse import parse_qs, urlsplit
 from http.server import ThreadingHTTPServer
 
 # Set cache configuration before libraries can snapshot their environment.
-os.environ.setdefault('HF_HOME',str(Path.home()/'.cache/tmp/milo-models'))
+os.environ.setdefault('HF_HOME',os.environ.get('MILO_VOICE_DIR',str(Path.home()/'.cache/tmp/milo-models')))
 os.environ['HF_HUB_OFFLINE']='1'
 
 from server import Engine, Turn, handler_for, validate_payload, validate_options, ROOT, MAX_BODY, MODEL, MODELS, OLLAMA, THOUGHT_RULE, unfiltered_model
@@ -34,7 +34,7 @@ from conversation import PROFILES, REFERENCE_PREFIX, build_messages, ollama_mode
 import hearing
 import reminders
 
-DEFAULT_ROOT=Path(os.environ.get('MILO_DOCUMENTS_DIR',str(Path.home()/'.local/share/local-ai-lab/milo-demo/documents')))
+DEFAULT_ROOT=Path(os.environ.get('MILO_DOCUMENTS_DIR',str(Path.home()/'.local/share/milo/documents')))
 
 
 def jarvis_preview(text):
@@ -486,7 +486,7 @@ def demo_handler(engine,port):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--port',type=int,default=8776)
+    parser.add_argument('--port',type=int,default=int(os.environ.get('MILO_PORT','8766')))
     parser.add_argument('--documents',type=Path,default=DEFAULT_ROOT)
     parser.add_argument('--settings',type=Path,default=None)
     parser.add_argument('--voice-dir',type=Path,default=Path(os.environ.get('MILO_VOICE_DIR',str(Path.home()/'.cache/tmp/milo-models'))))
