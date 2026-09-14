@@ -60,7 +60,7 @@ html[data-milo-theme="hifi"] {
   --theme-line: #4b4c45;
   --theme-ink: #f3eee2;
   --theme-muted: #aaa99e;
-  --theme-accent: #f0a33a;
+  --theme-accent: #4fb3ff;
   --theme-accent-2: #d75432;
   --theme-input: #080908;
   --theme-paper: #d3c8ad;
@@ -69,14 +69,14 @@ html[data-milo-theme="hifi"] {
   --theme-paper-line: #aaa083;
   --theme-study-a: #1b1d1a;
   --theme-study-b: #4d4e44;
-  --theme-study-light: #a05a29;
+  --theme-study-light: #2b6f9e;
   --theme-shadow: #00000099;
   --theme-font: "Arial Narrow", "Roboto Condensed", system-ui, sans-serif;
   --theme-display: "Arial Narrow", "Roboto Condensed", system-ui, sans-serif;
   --theme-radius: 1px;
   --theme-grid: repeating-linear-gradient(0deg, transparent 0 3px, #ffffff08 3px 4px);
   --theme-grid-size: 100% 4px;
-  --theme-texture: linear-gradient(90deg, transparent 49.8%, #f0a33a12 50%, transparent 50.2%);
+  --theme-texture: linear-gradient(90deg, transparent 49.8%, #4fb3ff12 50%, transparent 50.2%);
 }
 
 html[data-milo-theme="library"] {

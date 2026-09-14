@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-09-13: Hi-fi theme highlights are blue, the thought bubble follows the theme
+
+- The Hi-fi console theme swaps its signal amber for signal blue: accent, texture line, the robot face and eye glow, the theme swatch and note.
+- The corner overlay thought bubble reads panel, line, ink, muted, accent and shadow from the active theme instead of a fixed green.
+
 ## 2026-09-13
 
 Synced the full Milo engine into the public repository and refreshed the setup

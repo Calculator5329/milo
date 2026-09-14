@@ -26,12 +26,12 @@ export const MILO_THEMES = Object.freeze([
   {
     id: 'hifi',
     name: 'Hi-fi console',
-    note: 'Black lacquer and signal amber',
-    swatches: ['#0c0d0c', '#f0a33a', '#d75432'],
+    note: 'Black lacquer and signal blue',
+    swatches: ['#0c0d0c', '#4fb3ff', '#d75432'],
     robot: {
       shell: '#343632', shellLight: '#585b54', shellShade: '#1e201e',
-      edge: '#090a09', joint: '#121412', screen: '#090b09',
-      face: '#f0a33a', copper: '#d75432', ground: '#000000', eyeGlow: '#ffd787',
+      edge: '#090a09', joint: '#121412', screen: '#070b0e',
+      face: '#4fb3ff', copper: '#d75432', ground: '#000000', eyeGlow: '#c6e6ff',
     },
   },
   {
