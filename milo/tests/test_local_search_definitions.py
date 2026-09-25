@@ -68,3 +68,19 @@ class DefinitionLookupTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class FreshBootTests(unittest.TestCase):
+    def test_catalog_is_asked_on_a_machine_up_under_ten_minutes(self):
+        # time.monotonic() counts from boot; a (0.0, None) cache seed read as "checked, no
+        # dictionary" for the first ten minutes of uptime, which is every CI runner (2026-09-25).
+        import local_search
+        adapter = FakeAdapter()
+        client = LocalLibraryClient(adapter=adapter)
+        real = local_search.time.monotonic
+        local_search.time.monotonic = lambda: 5.0
+        try:
+            self.assertEqual(client.dictionary_book(), 'wiktionary_en_all_nopic_2026-08')
+        finally:
+            local_search.time.monotonic = real
+        self.assertEqual(adapter.catalog_calls, [adapter.catalog_path])

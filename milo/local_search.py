@@ -69,14 +69,14 @@ class LocalLibraryClient:
         self.adapter = adapter if adapter is not None else (
             KiwixHttpAdapter(base_url=base_url, timeout=3) if base_url else None)
         self.deadline = deadline
-        self._dictionary = (0.0, None)
+        self._dictionary = (None, None)  # (last check, book); None means never asked
 
     def dictionary_book(self):
         """The served Wiktionary book id, rediscovered every ten minutes; None without one."""
         if self.adapter is None:
             return None
         checked, book = self._dictionary
-        if time.monotonic() - checked < 600:
+        if checked is not None and time.monotonic() - checked < 600:
             return book
         try:
             match = DICTIONARY_BOOK_RE.search(self.adapter._get('/catalog/v2/entries?count=100'))
