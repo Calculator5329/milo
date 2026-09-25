@@ -153,7 +153,9 @@ def main():
            'voice': args.voice, 'turns_per_kind': args.turns, 'health': health, 'gpu': gpu_state(),
            'units': 'milliseconds from server turn start (handler entry); client_* are measured by this probe from request send',
            'summary': {kind: summarize(rows) for kind, rows in runs.items()}, 'runs': runs}
-    path = Path(__file__).resolve().parents[1] / 'evidence' / f'latency-{stamp:%Y%m%d}-{args.label}.json'
+    folder = Path(__file__).resolve().parents[2] / 'evidence' / 'local'
+    folder.mkdir(parents=True, exist_ok=True)
+    path = folder / f'latency-{stamp:%Y%m%d}-{args.label}.json'
     path.write_text(json.dumps(out, indent=2) + '\n')
     for kind, table in out['summary'].items():
         print(f'\n{kind} (n={args.turns})')
