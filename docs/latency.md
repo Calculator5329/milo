@@ -24,6 +24,20 @@ from the moment the server received the request. Full file:
 An audio turn is a spoken question of about three seconds. The 404 ms is what you feel as the
 gap. The "last audio sent" numbers are long only because the reply is being spoken.
 
+### Second reading and interruption, 2026-09-24
+
+Same card, model and voice, four turns of each kind, taken while other jobs held the machine
+at a one-minute load average of 38 on 20 threads. Audio turns: first token 670 ms p50, first
+audio at the client 850 ms p50. Text turns: 597 ms and 1204 ms. Treat it as the busy case.
+File: `docs/evidence/latency-20260924-rtx5070ti-gemma4-12b-busy.json`.
+
+`scripts/interrupt_probe.py` asked for a long story six times, cancelled 1.2 s after the first
+audio chunk arrived, the way the Stop button does, and timed the rest. The cancel returned in
+2 ms p50 (3 ms max), the server closed the turn stream 14.5 ms p50 after the cancel (80 ms max),
+and no audio chunk arrived after it in any of the six turns. The page stops its own playback at
+the click, so this is the server side only. File:
+`docs/evidence/interrupt-20260924-rtx5070ti-gemma4-12b.json`.
+
 ## The changes, in the order they mattered
 
 1. **Sentence-at-a-time synthesis, concurrent with generation.** The model streams tokens
@@ -68,7 +82,8 @@ python milo.py probe --turns 6 --label after
 ```
 
 Compare `first_token_ms` (model fit), `first_audio_chunk_sent` (server side pipeline) and
-`client_first_audio_ms` (what you hear) between the two JSON files in `evidence/local/`.
+`client_first_audio_ms` (what you hear) between the two JSON files in `evidence/local/`. For interruption, run
+`python scripts/interrupt_probe.py --turns 6 --label mine` against the same test server.
 Every `done` event in the page's "Connection and measured timing" panel carries the same
 stage marks for real conversations.
 

@@ -1,0 +1,51 @@
+{
+  "url": "http://127.0.0.1:8767",
+  "video": "docs/interrupt-demo.mp4 (converted from the Playwright webm)",
+  "question": "Tell me a slow story about a lighthouse keeper and a lost ship, in about eight sentences.",
+  "follow_up": "What was the last thing you told me?",
+  "marks": [
+    {
+      "ms": 149,
+      "label": "loaded",
+      "status": "Ready \u00b7 microphone off",
+      "caption": "What are we figuring out?"
+    },
+    {
+      "ms": 4490,
+      "label": "sent",
+      "status": "Thinking locally\u2026",
+      "caption": "\u2026"
+    },
+    {
+      "ms": 5778,
+      "label": "speaking",
+      "status": "Speaking",
+      "caption": "The lighthouse keeper watched the beam cut through the fog, a steady pulse against the heavy gray."
+    },
+    {
+      "ms": 10317,
+      "label": "stop clicked",
+      "status": "Ready \u00b7 microphone off",
+      "caption": "Stopped."
+    },
+    {
+      "ms": 10569,
+      "label": "250 ms after stop",
+      "status": "Ready \u00b7 microphone off",
+      "caption": "Stopped."
+    },
+    {
+      "ms": 13814,
+      "label": "follow-up sent",
+      "status": "Thinking locally\u2026",
+      "caption": "\u2026"
+    },
+    {
+      "ms": 17244,
+      "label": "follow-up finished",
+      "status": "Ready \u00b7 microphone off",
+      "caption": "I told you about the lighthouse keeper watching the beam cut through the fog."
+    }
+  ],
+  "metrics_panel": "{\n  \"model\": \"gemma4:12b\",\n  \"speech\": \"Pocket TTS \u00b7 CPU \u00b7 marius\",\n  \"voice_sound\": \"circuit\",\n  \"audio_context\": \"running\",\n  \"microphone\": \"off\",\n  \"audio_peak\": 0.3066,\n  \"first_playback_ms\": 633,\n  \"playback_note\": \"Scheduled Web Audio start relative to request; excludes speaker hardware delay.\",\n  \"request_received\": 0,\n  \"route_ms\": 0,\n  \"router_ms\": 0,\n  \"prefetch\": \"miss\",\n  \"memory_ms\": 9,\n  \"generation_started\": 10,\n  \"thoughts\": 0,\n  \"first_token_ms\": 350,\n  \"thought_counts\": {},\n  \"first_sentence_ready\": 525,\n  \"first_sentence_ms\": 525,\n  \"generation_done\": 537,\n  \"generation_finish\": \"stop\",\n  \"generated_tokens\": 16,\n  \"first_audio_chunk_sent\": 607,\n  \"first_audio_ms\": 607,\n  \"last_audio_sent\": 1188\n}"
+}

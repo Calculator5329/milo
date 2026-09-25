@@ -1,0 +1,556 @@
+{
+  "label": "career-review",
+  "recorded_at": "2026-09-24T22:45:23-05:00",
+  "url": "http://127.0.0.1:8767",
+  "model": "gemma4:12b",
+  "voice": "marius",
+  "turns_per_kind": 4,
+  "health": {
+    "ready": true,
+    "error": null,
+    "model": "gemma4:12b",
+    "tts": "Pocket TTS (CPU)",
+    "voice": "marius",
+    "models": {
+      "gemma4:12b": "Quick \u00b7 Gemma 4",
+      "gpt-oss:20b": "Careful \u00b7 GPT OSS",
+      "phi4:latest": "Balanced \u00b7 Phi-4",
+      "gemma4:4b": "Light \u00b7 Gemma 4 4B"
+    },
+    "voices": [
+      "marius",
+      "javert",
+      "bill_boerst",
+      "stuart_bell",
+      "alba",
+      "cosette",
+      "fantine",
+      "eponine",
+      "jean",
+      "anna",
+      "peter_yearsley",
+      "caro_davy"
+    ],
+    "local_speech": true,
+    "web": "Asked, live facts, or library fallback",
+    "library": false,
+    "silence_ms": 350
+  },
+  "gpu": {
+    "ollama_ps": {
+      "models": [
+        {
+          "name": "gemma4:12b",
+          "model": "gemma4:12b",
+          "size": 8063046122,
+          "digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "details": {
+            "parent_model": "",
+            "format": "gguf",
+            "family": "gemma4",
+            "families": [
+              "gemma4"
+            ],
+            "parameter_size": "11.9B",
+            "quantization_level": "Q4_K_M"
+          },
+          "expires_at": "2026-09-25T00:45:20.719927743-05:00",
+          "size_vram": 8063046122,
+          "context_length": 4096,
+          "vram_fraction": 1.0
+        },
+        {
+          "name": "nomic-embed-text:latest",
+          "model": "nomic-embed-text:latest",
+          "size": 323150151,
+          "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+          "details": {
+            "parent_model": "",
+            "format": "gguf",
+            "family": "nomic-bert",
+            "families": [
+              "nomic-bert"
+            ],
+            "parameter_size": "137M",
+            "quantization_level": "F16"
+          },
+          "expires_at": "2026-09-24T22:50:19.654023822-05:00",
+          "size_vram": 323150151,
+          "context_length": 2048,
+          "vram_fraction": 1.0
+        }
+      ]
+    },
+    "nvidia_smi": "NVIDIA GeForce RTX 5070 Ti, 14092 MiB, 16303 MiB, 10 %",
+    "nvidia_smi_apps": [
+      {
+        "process": "python",
+        "memory": "1822 MiB"
+      },
+      {
+        "process": "whisper-server",
+        "memory": "2202 MiB"
+      },
+      {
+        "process": "claude-desktop",
+        "memory": "144 MiB"
+      },
+      {
+        "process": "chrome",
+        "memory": "121 MiB"
+      },
+      {
+        "process": "llama-server",
+        "memory": "8312 MiB"
+      },
+      {
+        "process": "llama-server",
+        "memory": "662 MiB"
+      }
+    ]
+  },
+  "units": "milliseconds from server turn start (handler entry); client_* are measured by this probe from request send",
+  "summary": {
+    "text": {
+      "request_received": {
+        "n": 4,
+        "p50": 0,
+        "p95": 1,
+        "min": 0,
+        "max": 1
+      },
+      "generation_started": {
+        "n": 4,
+        "p50": 144,
+        "p95": 698,
+        "min": 52,
+        "max": 783
+      },
+      "first_token_ms": {
+        "n": 4,
+        "p50": 597,
+        "p95": 1414,
+        "min": 370,
+        "max": 1518
+      },
+      "first_sentence_ready": {
+        "n": 4,
+        "p50": 800,
+        "p95": 1635,
+        "min": 499,
+        "max": 1752
+      },
+      "first_audio_chunk_sent": {
+        "n": 4,
+        "p50": 1202,
+        "p95": 1883,
+        "min": 571,
+        "max": 1921
+      },
+      "generation_done": {
+        "n": 4,
+        "p50": 1018,
+        "p95": 1900,
+        "min": 803,
+        "max": 2051
+      },
+      "last_audio_sent": {
+        "n": 4,
+        "p50": 5026,
+        "p95": 8443,
+        "min": 2162,
+        "max": 8992
+      },
+      "client_first_audio_ms": {
+        "n": 4,
+        "p50": 1204,
+        "p95": 1885,
+        "min": 572,
+        "max": 1923
+      },
+      "client_done_ms": {
+        "n": 4,
+        "p50": 5053,
+        "p95": 8458,
+        "min": 2174,
+        "max": 9007
+      }
+    },
+    "audio": {
+      "request_received": {
+        "n": 4,
+        "p50": 1,
+        "p95": 1,
+        "min": 0,
+        "max": 1
+      },
+      "generation_started": {
+        "n": 4,
+        "p50": 390,
+        "p95": 413,
+        "min": 277,
+        "max": 415
+      },
+      "first_token_ms": {
+        "n": 4,
+        "p50": 670,
+        "p95": 981,
+        "min": 557,
+        "max": 1034
+      },
+      "first_sentence_ready": {
+        "n": 4,
+        "p50": 751,
+        "p95": 1082,
+        "min": 645,
+        "max": 1138
+      },
+      "first_audio_chunk_sent": {
+        "n": 4,
+        "p50": 848,
+        "p95": 1349,
+        "min": 733,
+        "max": 1436
+      },
+      "generation_done": {
+        "n": 4,
+        "p50": 1355,
+        "p95": 1880,
+        "min": 1169,
+        "max": 1958
+      },
+      "last_audio_sent": {
+        "n": 4,
+        "p50": 3931,
+        "p95": 8684,
+        "min": 3196,
+        "max": 9508
+      },
+      "client_first_audio_ms": {
+        "n": 4,
+        "p50": 850,
+        "p95": 1351,
+        "min": 734,
+        "max": 1439
+      },
+      "client_done_ms": {
+        "n": 4,
+        "p50": 3945,
+        "p95": 8721,
+        "min": 3207,
+        "max": 9548
+      }
+    }
+  },
+  "runs": {
+    "text": [
+      {
+        "events": {
+          "transcript": 1,
+          "route": 1,
+          "router": 1,
+          "context_summary": 1,
+          "sentence": 1,
+          "audio": 29,
+          "sentence_end": 1,
+          "done": 1
+        },
+        "sentences": [
+          "Hey there, I'm Milo, your local companion."
+        ],
+        "metrics": {
+          "client_first_audio_ms": 1669,
+          "request_received": 1,
+          "route_ms": 0,
+          "router_ms": 2,
+          "prefetch": "miss",
+          "memory_ms": 213,
+          "generation_started": 219,
+          "thoughts": 0,
+          "first_token_ms": 822,
+          "thought_counts": {},
+          "first_sentence_ready": 969,
+          "first_sentence_ms": 970,
+          "generation_done": 990,
+          "generation_finish": "stop",
+          "generated_tokens": 13,
+          "first_audio_chunk_sent": 1668,
+          "first_audio_ms": 1668,
+          "last_audio_sent": 2162,
+          "client_done_ms": 2174
+        }
+      },
+      {
+        "events": {
+          "transcript": 1,
+          "route": 1,
+          "router": 1,
+          "context_summary": 1,
+          "sentence": 2,
+          "audio": 75,
+          "sentence_end": 2,
+          "done": 1
+        },
+        "sentences": [
+          "No, you can't fit it all in.",
+          "The report and booking take exactly 20 minutes, leaving you with zero time for that email."
+        ],
+        "metrics": {
+          "client_first_audio_ms": 572,
+          "request_received": 0,
+          "route_ms": 0,
+          "router_ms": 0,
+          "prefetch": "miss",
+          "memory_ms": 51,
+          "generation_started": 52,
+          "thoughts": 0,
+          "first_token_ms": 370,
+          "thought_counts": {},
+          "first_sentence_ready": 499,
+          "first_sentence_ms": 499,
+          "first_audio_chunk_sent": 571,
+          "first_audio_ms": 571,
+          "last_audio_sent": 4716,
+          "generation_done": 803,
+          "generation_finish": "stop",
+          "generated_tokens": 32,
+          "client_done_ms": 4760
+        }
+      },
+      {
+        "events": {
+          "transcript": 1,
+          "route": 1,
+          "router": 1,
+          "context_summary": 1,
+          "sentence": 2,
+          "audio": 94,
+          "sentence_end": 2,
+          "done": 1
+        },
+        "sentences": [
+          "My take is that a slow, caffeine-fueled walk outside is the best way to start.",
+          "It clears the head and gets your legs moving before the weekend's demands pile up."
+        ],
+        "metrics": {
+          "client_first_audio_ms": 1923,
+          "request_received": 0,
+          "route_ms": 0,
+          "router_ms": 0,
+          "prefetch": "miss",
+          "memory_ms": 781,
+          "generation_started": 783,
+          "thoughts": 0,
+          "first_token_ms": 1518,
+          "thought_counts": {},
+          "first_sentence_ready": 1752,
+          "first_sentence_ms": 1752,
+          "first_audio_chunk_sent": 1921,
+          "first_audio_ms": 1921,
+          "last_audio_sent": 8992,
+          "generation_done": 2051,
+          "generation_finish": "stop",
+          "generated_tokens": 38,
+          "client_done_ms": 9007
+        }
+      },
+      {
+        "events": {
+          "transcript": 1,
+          "route": 1,
+          "router": 1,
+          "context_summary": 1,
+          "sentence": 3,
+          "audio": 135,
+          "sentence_end": 3,
+          "done": 1
+        },
+        "sentences": [
+          "My take is that a physical notebook forces you to slow down and actually process your thoughts instead of",
+          "just skimming them on a screen.",
+          "It creates a tangible space where your ideas can breathe without notifications jumping in your face."
+        ],
+        "metrics": {
+          "client_first_audio_ms": 738,
+          "request_received": 0,
+          "route_ms": 0,
+          "router_ms": 0,
+          "prefetch": "miss",
+          "memory_ms": 67,
+          "generation_started": 68,
+          "thoughts": 0,
+          "first_token_ms": 372,
+          "thought_counts": {},
+          "first_sentence_ready": 632,
+          "first_sentence_ms": 632,
+          "first_audio_chunk_sent": 737,
+          "first_audio_ms": 737,
+          "last_audio_sent": 5335,
+          "generation_done": 1046,
+          "generation_finish": "stop",
+          "generated_tokens": 44,
+          "client_done_ms": 5346
+        }
+      }
+    ],
+    "audio": [
+      {
+        "events": {
+          "transcript": 1,
+          "route": 1,
+          "router": 1,
+          "context_summary": 1,
+          "sentence": 3,
+          "audio": 94,
+          "sentence_end": 3,
+          "done": 1
+        },
+        "sentences": [
+          "Wait, I'm Milo.",
+          "You must be the one behind the mic.",
+          "Let's talk about your setup on CachyOS; I'm curious how you're liking the Hyprland experience so far."
+        ],
+        "metrics": {
+          "client_first_audio_ms": 854,
+          "request_received": 1,
+          "transcribe_ms": 182,
+          "route_ms": 0,
+          "router_ms": 0,
+          "prefetch": "miss",
+          "memory_ms": 194,
+          "generation_started": 377,
+          "thoughts": 0,
+          "first_token_ms": 659,
+          "thought_counts": {},
+          "first_sentence_ready": 738,
+          "first_sentence_ms": 738,
+          "first_audio_chunk_sent": 853,
+          "first_audio_ms": 853,
+          "last_audio_sent": 3196,
+          "generation_done": 1272,
+          "generation_finish": "stop",
+          "generated_tokens": 46,
+          "client_done_ms": 3207
+        }
+      },
+      {
+        "events": {
+          "transcript": 1,
+          "route": 1,
+          "router": 1,
+          "context_summary": 1,
+          "sentence": 3,
+          "audio": 108,
+          "sentence_end": 3,
+          "done": 1
+        },
+        "sentences": [
+          "Wait, I'm Milo.",
+          "You've got the name mixed up, but I'm happy to chat about whatever's on your mind.",
+          "Since we're both hanging out on your CachyOS machine, maybe we could start with something you're working on?"
+        ],
+        "metrics": {
+          "client_first_audio_ms": 1439,
+          "request_received": 1,
+          "transcribe_ms": 135,
+          "route_ms": 0,
+          "router_ms": 0,
+          "prefetch": "miss",
+          "memory_ms": 277,
+          "generation_started": 415,
+          "thoughts": 0,
+          "first_token_ms": 1034,
+          "thought_counts": {},
+          "first_sentence_ready": 1138,
+          "first_sentence_ms": 1138,
+          "first_audio_chunk_sent": 1436,
+          "first_audio_ms": 1436,
+          "last_audio_sent": 9508,
+          "generation_done": 1958,
+          "generation_finish": "stop",
+          "generated_tokens": 58,
+          "client_done_ms": 9548
+        }
+      },
+      {
+        "events": {
+          "transcript": 1,
+          "route": 1,
+          "router": 1,
+          "context_summary": 1,
+          "sentence": 3,
+          "audio": 102,
+          "sentence_end": 3,
+          "done": 1
+        },
+        "sentences": [
+          "Wait, I'm Milo.",
+          "You've got the name mixed up, but I'm happy to chat about whatever's on your mind.",
+          "Since we're both on this machine now, maybe start with something you're working on in your workspace."
+        ],
+        "metrics": {
+          "client_first_audio_ms": 846,
+          "request_received": 1,
+          "transcribe_ms": 113,
+          "route_ms": 0,
+          "router_ms": 0,
+          "prefetch": "miss",
+          "memory_ms": 290,
+          "generation_started": 404,
+          "thoughts": 0,
+          "first_token_ms": 682,
+          "thought_counts": {},
+          "first_sentence_ready": 764,
+          "first_sentence_ms": 764,
+          "first_audio_chunk_sent": 844,
+          "first_audio_ms": 844,
+          "last_audio_sent": 3847,
+          "generation_done": 1438,
+          "generation_finish": "stop",
+          "generated_tokens": 55,
+          "client_done_ms": 3858
+        }
+      },
+      {
+        "events": {
+          "transcript": 1,
+          "route": 1,
+          "router": 1,
+          "context_summary": 1,
+          "sentence": 3,
+          "audio": 87,
+          "sentence_end": 3,
+          "done": 1
+        },
+        "sentences": [
+          "Wait, I'm Milo.",
+          "You've got the names mixed up, but I'm happy to chat.",
+          "Let's talk about your CachyOS setup or whatever's on your mind."
+        ],
+        "metrics": {
+          "client_first_audio_ms": 734,
+          "request_received": 0,
+          "transcribe_ms": 87,
+          "route_ms": 0,
+          "router_ms": 0,
+          "prefetch": "miss",
+          "memory_ms": 189,
+          "generation_started": 277,
+          "thoughts": 0,
+          "first_token_ms": 557,
+          "thought_counts": {},
+          "first_sentence_ready": 645,
+          "first_sentence_ms": 645,
+          "first_audio_chunk_sent": 733,
+          "first_audio_ms": 733,
+          "last_audio_sent": 4015,
+          "generation_done": 1169,
+          "generation_finish": "stop",
+          "generated_tokens": 43,
+          "client_done_ms": 4032
+        }
+      }
+    ]
+  },
+  "note": "Recorded while the machine was busy with other work (one-minute load average 38 on 20 threads, read right after the run). Process list reduced to names for publication."
+}

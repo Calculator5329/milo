@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-09-24: Latency table, interrupt probe and demo, CI workflow
+
+- The README opens with a measured latency table, from the 2026-09-12 reference reading and a
+  2026-09-24 reading taken on a busy machine, with the evidence files in `docs/evidence/`.
+- `scripts/interrupt_probe.py` measures how fast a cancelled turn stops on the server: 14.5 ms
+  p50 to stream close, no audio chunks after the cancel, six turns.
+- `docs/interrupt-demo.gif` and `.mp4`: a real interrupted turn on the page, recorded headless
+  by `scripts/record_interrupt_demo.cjs`. No audio.
+- The latency probe wrote to a `milo/evidence/` folder that does not exist and crashed after
+  the run; it now writes to `evidence/local/` as `docs/latency.md` says.
+- `.github/workflows/tests.yml` runs `python milo.py test` on push. README badge added.
+- README gains a "How it was built" section.
+
 ## 2026-09-13: Hi-fi theme highlights are blue, the thought bubble follows the theme
 
 - The Hi-fi console theme swaps its signal amber for signal blue: accent, texture line, the robot face and eye glow, the theme swatch and note.

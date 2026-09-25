@@ -1,0 +1,170 @@
+{
+  "label": "career-review",
+  "recorded_at": "2026-09-24T22:46:28-05:00",
+  "url": "http://127.0.0.1:8767",
+  "model": "gemma4:12b",
+  "voice": "marius",
+  "hold_ms": 1200,
+  "units": "milliseconds from the /api/cancel request",
+  "summary": {
+    "cancel_ack_ms": {
+      "n": 6,
+      "p50": 2.0,
+      "max": 3
+    },
+    "last_audio_after_ms": {
+      "n": 6,
+      "p50": 0.0,
+      "max": 0
+    },
+    "stream_closed_ms": {
+      "n": 6,
+      "p50": 14.5,
+      "max": 80
+    },
+    "audio_chunks_after": {
+      "n": 6,
+      "p50": 0.0,
+      "max": 0
+    },
+    "audio_seconds_after": {
+      "n": 6,
+      "p50": 0.0,
+      "max": 0
+    }
+  },
+  "runs": [
+    {
+      "id": "interrupt-0-1790307968685",
+      "cancel_response": {
+        "cancelled": true
+      },
+      "cancel_ack_ms": 2,
+      "last_audio_after_ms": 0,
+      "stream_closed_ms": 31,
+      "audio_chunks_before": 48,
+      "audio_chunks_after": 0,
+      "audio_seconds_after": 0,
+      "event_types": [
+        "audio",
+        "context_summary",
+        "route",
+        "router",
+        "sentence",
+        "sentence_end",
+        "transcript"
+      ],
+      "done_event": false
+    },
+    {
+      "id": "interrupt-1-1790307972268",
+      "cancel_response": {
+        "cancelled": true
+      },
+      "cancel_ack_ms": 2,
+      "last_audio_after_ms": 0,
+      "stream_closed_ms": 12,
+      "audio_chunks_before": 49,
+      "audio_chunks_after": 0,
+      "audio_seconds_after": 0,
+      "event_types": [
+        "audio",
+        "context_summary",
+        "route",
+        "router",
+        "sentence",
+        "sentence_end",
+        "transcript"
+      ],
+      "done_event": false
+    },
+    {
+      "id": "interrupt-2-1790307975179",
+      "cancel_response": {
+        "cancelled": true
+      },
+      "cancel_ack_ms": 2,
+      "last_audio_after_ms": 0,
+      "stream_closed_ms": 8,
+      "audio_chunks_before": 50,
+      "audio_chunks_after": 0,
+      "audio_seconds_after": 0,
+      "event_types": [
+        "audio",
+        "context_summary",
+        "route",
+        "router",
+        "sentence",
+        "sentence_end",
+        "transcript"
+      ],
+      "done_event": false
+    },
+    {
+      "id": "interrupt-3-1790307978170",
+      "cancel_response": {
+        "cancelled": true
+      },
+      "cancel_ack_ms": 2,
+      "last_audio_after_ms": 0,
+      "stream_closed_ms": 17,
+      "audio_chunks_before": 30,
+      "audio_chunks_after": 0,
+      "audio_seconds_after": 0,
+      "event_types": [
+        "audio",
+        "context_summary",
+        "route",
+        "router",
+        "sentence",
+        "sentence_end",
+        "transcript"
+      ],
+      "done_event": false
+    },
+    {
+      "id": "interrupt-4-1790307981368",
+      "cancel_response": {
+        "cancelled": true
+      },
+      "cancel_ack_ms": 3,
+      "last_audio_after_ms": 0,
+      "stream_closed_ms": 80,
+      "audio_chunks_before": 21,
+      "audio_chunks_after": 0,
+      "audio_seconds_after": 0,
+      "event_types": [
+        "audio",
+        "context_summary",
+        "route",
+        "router",
+        "sentence",
+        "sentence_end",
+        "transcript"
+      ],
+      "done_event": false
+    },
+    {
+      "id": "interrupt-5-1790307985468",
+      "cancel_response": {
+        "cancelled": true
+      },
+      "cancel_ack_ms": 3,
+      "last_audio_after_ms": 0,
+      "stream_closed_ms": 10,
+      "audio_chunks_before": 22,
+      "audio_chunks_after": 0,
+      "audio_seconds_after": 0,
+      "event_types": [
+        "audio",
+        "context_summary",
+        "route",
+        "router",
+        "sentence",
+        "sentence_end",
+        "transcript"
+      ],
+      "done_event": false
+    }
+  ]
+}
