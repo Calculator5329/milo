@@ -54,7 +54,8 @@ class SearchTests(unittest.TestCase):
         good=lambda q:[{'href':'https://example.org','title':'Example','body':'Actual excerpt'}]
         self.assertEqual(SearchClient(good).search('example',threading.Event())[0]['title'],'Example')
         def fail(q):raise RuntimeError('provider down')
-        with self.assertRaises(SearchUnavailable):SearchClient(fail).search('example',threading.Event())
+        with mock.patch('web_search.print', create=True):
+            with self.assertRaises(SearchUnavailable):SearchClient(fail).search('example',threading.Event())
         with self.assertRaises(SearchUnavailable):SearchClient(lambda q:[]).search('example',threading.Event())
 
     def test_cancel_and_deadline_do_not_queue_workers(self):
@@ -242,7 +243,8 @@ class LibraryFirstTests(unittest.TestCase):
         plan=self._plan();turn.plan=plan
         def broken(query): raise SearchUnavailable('Every search backend failed (bing: empty).')
         engine=self._engine([],[]);engine.search=SearchClient(broken)
-        sources,failure=engine.lookup(turn,'reload the Hyprland config',events.append,plan=plan)
+        with mock.patch('web_search.print', create=True):
+            sources,failure=engine.lookup(turn,'reload the Hyprland config',events.append,plan=plan)
         self.assertEqual((sources,failure),([],None))
         self.assertIn('usable web results',turn.metrics['web_failed'])
         self.assertNotIn('search_failed',[e['type'] for e in events])
@@ -250,7 +252,8 @@ class LibraryFirstTests(unittest.TestCase):
         # An explicit web ask still hears the failure.
         events=[];turn=Turn('t10');turn.options['web']=False
         plan=self._plan(route='web',band='explicit',reason='asked for the web');turn.plan=plan
-        sources,failure=engine.lookup(turn,'q',events.append,plan=plan)
+        with mock.patch('web_search.print', create=True):
+            sources,failure=engine.lookup(turn,'q',events.append,plan=plan)
         self.assertIn('usable web results',failure)
         self.assertIn('search_failed',[e['type'] for e in events])
 

@@ -1,13 +1,41 @@
 """Exercise real Rubber Band pitch/tempo separation on synthetic audio."""
 import array
 import math
+import os
 from pathlib import Path
+import re
+import subprocess
 import sys
 import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from speech_audio import process, settings, stream
 
+
+RUBBERBAND_REASON = 'Voice adjustment needs FFmpeg with Rubber Band support.'
+
+
+def rubberband_available():
+    """Probe the exact optional ffmpeg filter required by the transform tests."""
+    if os.environ.get('MILO_TEST_FORCE_NO_RUBBERBAND') == '1':
+        return False
+    try:
+        probe = subprocess.run(
+            ['ffmpeg', '-hide_banner', '-filters'],
+            capture_output=True,
+            text=True,
+            timeout=5,
+            check=False,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return False
+    return probe.returncode == 0 and re.search(r'\brubberband\b', probe.stdout + probe.stderr) is not None
+
+
+requires_rubberband = unittest.skipUnless(rubberband_available(), RUBBERBAND_REASON)
+
+
 class SpeechAudioTests(unittest.TestCase):
+    @requires_rubberband
     def test_pitch_changes_frequency_without_changing_pace(self):
         rate=24000
         signal=array.array('f',(0.2*math.sin(2*math.pi*220*i/rate) for i in range(rate*2)))
@@ -17,6 +45,8 @@ class SpeechAudioTests(unittest.TestCase):
         frequency=crossings/(len(middle)/rate)
         self.assertAlmostEqual(len(out)/rate,2,delta=.08)
         self.assertAlmostEqual(frequency,220*2**.5,delta=6)
+
+    @requires_rubberband
     def test_pace_changes_duration_without_changing_pitch(self):
         rate=24000
         signal=array.array('f',(0.2*math.sin(2*math.pi*220*i/rate) for i in range(rate*2)))
@@ -25,6 +55,8 @@ class SpeechAudioTests(unittest.TestCase):
         frequency=sum(a<=0<b for a,b in zip(middle,middle[1:]))/(len(middle)/rate)
         self.assertAlmostEqual(len(out)/rate,2/2,delta=.09)
         self.assertAlmostEqual(frequency,220,delta=5)
+
+    @requires_rubberband
     def test_stream_emits_before_input_finishes_and_close_stops_consumption(self):
         consumed=[]
         def chunks():
@@ -37,6 +69,8 @@ class SpeechAudioTests(unittest.TestCase):
         count=len(consumed)
         output.close()
         self.assertEqual(len(consumed),count)
+
+    @requires_rubberband
     def test_cancelled_transform_does_not_consume_input(self):
         def chunks():
             self.fail('Cancelled transform consumed input')

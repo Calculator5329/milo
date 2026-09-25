@@ -5,12 +5,18 @@ from library.adapters import AdapterError
 
 class FakeAdapter:
     base_url = 'http://kiwix.test'
+    catalog_path = '/catalog/v2/entries?count=100'
+    catalog = '<entry><name>wiktionary_en_all</name><link href="/content/wiktionary_en_all_nopic_2026-08"/></entry>'
 
     def __init__(self):
         self.calls = []
+        self.catalog_calls = []
 
     def _get(self, path):
-        return '<entry><name>wiktionary_en_all</name><link href="/content/wiktionary_en_all_nopic_2026-08"/></entry>'
+        self.catalog_calls.append(path)
+        if path != self.catalog_path:
+            raise AdapterError('unexpected catalog request')
+        return self.catalog
 
     def read(self, path):
         if path.endswith('/ephemeral'):
@@ -40,12 +46,14 @@ class DefinitionLookupTests(unittest.TestCase):
         adapter = FakeAdapter()
         client = LocalLibraryClient(adapter=adapter)
         found = client.search('what the word wanderlust means', threading.Event())
+        self.assertEqual(adapter.catalog_calls, [adapter.catalog_path])
         self.assertEqual(adapter.calls, [('wanderlust', ['wiktionary_en_all_nopic_2026-08'])])
         self.assertEqual(found['sources'][0]['title'], 'Wanderlust')
 
     def test_direct_entry_read_leads_when_it_exists(self):
         adapter = FakeAdapter()
         found = LocalLibraryClient(adapter=adapter).search('define ephemeral', threading.Event())
+        self.assertEqual(adapter.catalog_calls, [adapter.catalog_path])
         self.assertEqual(found['sources'][0]['title'], 'ephemeral')
         self.assertIn('lasting for a short time', found['sources'][0]['excerpt'])
         self.assertEqual(found['sources'][0]['citation'], 'kiwix://x/ephemeral')
@@ -53,6 +61,7 @@ class DefinitionLookupTests(unittest.TestCase):
     def test_other_questions_search_the_whole_corpus(self):
         adapter = FakeAdapter()
         found = LocalLibraryClient(adapter=adapter).search('how btrfs snapshots work', threading.Event())
+        self.assertEqual(adapter.catalog_calls, [])
         self.assertEqual(adapter.calls, [('how btrfs snapshots work', None)])
         self.assertEqual(found['sources'][0]['title'], 'German phrasebook')
 
